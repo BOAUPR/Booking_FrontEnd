@@ -7,11 +7,11 @@
     <br>
     <br>
     <b-nav vertical>
-      <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> <b-icon-book></b-icon-book> <br> ตารางการใช้ห้อง </b-button></b-nav-item>
+      <b-nav-item to="/about"> <b-button class="buttonMenu" variant="outline-secondary"> <b-icon-book></b-icon-book> <br> ตารางการใช้ห้อง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> สถานะการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> รายการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลผู้ใช้ </b-button></b-nav-item>
-      <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> ออกจากระบบ </b-button></b-nav-item>
+      <b-nav-item href="http://localhost:8080/"> <b-button class="buttonMenu" variant="outline-secondary"> ออกจากระบบ </b-button></b-nav-item>
     </b-nav>
   </div>
 </template>
