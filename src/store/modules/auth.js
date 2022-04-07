@@ -18,7 +18,7 @@ export default {
     async login ({ commit }, payload) {
       console.log(payload)
       try {
-        const res = await login(payload.email, payload.password)
+        const res = await login(payload.username, payload.password)
         const user = res.data.user
         const token = res.data.token
         localStorage.setItem('token', token)

@@ -11,13 +11,19 @@
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> สถานะการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> รายการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลผู้ใช้ </b-button></b-nav-item>
-      <b-nav-item href="http://localhost:8080/"> <b-button class="buttonMenu" variant="outline-secondary"> ออกจากระบบ </b-button></b-nav-item>
+      <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary" @click="logout()"> ออกจากระบบ </b-button></b-nav-item>
     </b-nav>
   </div>
 </template>
 <script>
 export default {
-
+  components: {
+  },
+  methods: {
+    logout () {
+      this.$store.dispatch('auth/logout')
+    }
+  }
 }
 </script>
 <style>
