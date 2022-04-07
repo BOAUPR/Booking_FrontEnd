@@ -1,9 +1,35 @@
 <template>
   <div>
-    Main Menu
+    <b-container fluid>
+      <b-row>
+        <b-col cols="2" class="app-menu min-vh-100">
+          <Menu/>
+        </b-col>
+        <b-col cols="10">
+          <b-container>
+            <b-row>
+              <b-col>
+                <!-- <NavBar/> -->
+                NavBar
+              </b-col>
+            </b-row>
+            <b-row class="text-justify">
+              <b-col><router-view></router-view></b-col>
+            </b-row>
+          </b-container>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 <script>
-export default {}
+import Menu from '../components/Menu.vue'
+export default {
+  components: {
+    Menu
+  }
+}
 </script>
-<style></style>
+<style>
+
+</style>
