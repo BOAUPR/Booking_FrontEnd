@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import auth from './modules/auth'
 
 Vue.use(Vuex)
 
@@ -8,15 +9,10 @@ export default new Vuex.Store({
     isLogin: false
   },
   mutations: {
-    login (state) {
-      state.isLogin = true
-    },
-    logout (state) {
-      state.isLogin = false
-    }
   },
   actions: {
   },
   modules: {
+    auth
   }
 })

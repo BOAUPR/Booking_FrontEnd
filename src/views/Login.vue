@@ -8,7 +8,12 @@
         style="max-width: 40rem"
         class="mb-2"
       >
-      <img alt="Vue logo" src="../assets/logo_user.png" width="100" class="mb-2">
+        <img
+          alt="Vue logo"
+          src="../assets/logo_user.png"
+          width="100"
+          class="mb-2"
+        />
         <b-card-text>
           <b-form @submit="onSubmit" @reset="onReset" v-if="show">
             <b-form-group
@@ -49,6 +54,8 @@
           <b-card class="mt-3" header="Form Data Result">
             <pre class="m-0">{{ form }}</pre>
           </b-card>
+          {{ $store.state.auth.user }}
+          {{ $store.getters['auth/isLogin'] }}
         </b-card-text>
       </b-card>
     </b-col>
