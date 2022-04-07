@@ -1,6 +1,6 @@
 <template>
   <div class="app-menu min-vh-100">
-    <b-img src="../assets/chicken.jpg" width="100%" center class="pt-2 pb-2"></b-img>
+    <b-img src="../assets/chicken.jpg" width="100%" center class="pt-4 pb-4"></b-img>
     <div class="h3">
       User
     </div>
