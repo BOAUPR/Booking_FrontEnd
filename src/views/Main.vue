@@ -6,24 +6,24 @@
           <Menu />
         </b-col>
         <b-col cols="10">
+          <Booking />
           <b-container>
             <b-row>
-              <b-col>
-              </b-col>
+              <b-col> </b-col>
             </b-row>
             <b-row class="text-justify">
-              <b-col v-if="showT"><router-view/></b-col>
+              <b-col v-if="showT"><router-view /></b-col>
             </b-row>
           </b-container>
         </b-col>
       </b-row>
     </b-container>
-
   </Auth>
 </template>
 <script>
 import Menu from '../components/Menu.vue'
 import Auth from '../components/Auth.vue'
+import Booking from '../components/Booking.vue'
 // import Table from '../components/Table.vue'
 export default {
   data () {
@@ -33,7 +33,8 @@ export default {
   },
   components: {
     Auth,
-    Menu
+    Menu,
+    Booking
     // Table
   },
   methods: {
@@ -41,7 +42,6 @@ export default {
       // return Table
     }
   }
-
 }
 </script>
 <style></style>
