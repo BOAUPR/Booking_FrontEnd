@@ -1,10 +1,24 @@
 <template>
   <div id="app">
-    <router-view/>
+    <Auth>
+    <b-row>
+      <b-col cols="2" class="app-menu min-vh-100" v-if="isLogin">
+        <Menu/>
+      </b-col>
+      <b-col>
+        <b-container>
+          <b-row>
+            <b-col><router-view /></b-col>
+          </b-row>
+        </b-container>
+      </b-col>
+    </b-row>
+    </Auth>
   </div>
 </template>
-
 <script>
+import Menu from './components/Menu.vue'
+import Auth from './components/Auth.vue'
 export default {
   data () {
     return {
@@ -12,25 +26,15 @@ export default {
     }
   },
   components: {
-    // Menu
+    Menu,
+    Auth
   },
   methods: {
     logout () {
       this.$store.dispatch('auth/logout')
     },
-    onsubmit (event) {
-      event.preventDefault()
-      this.$store.dispatch('auth/login', this.form)
-    },
-    onReset (event) {
-      event.preventDefault()
-      // Reset our form values
-      this.form.username = ''
-      this.form.password = ''
-      this.show = false
-      this.$nextTick(() => {
-        this.show = true
-      })
+    login () {
+      this.$store.dispatch('/login')
     }
   },
   computed: {
