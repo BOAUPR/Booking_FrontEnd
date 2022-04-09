@@ -3,20 +3,20 @@
     <b-container fluid>
       <b-row>
         <b-col class="text-right">
-          <b-button @click="newProduct()" variant="primary">เพิ่มใหม่</b-button>
+          <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button>
         </b-col>
       </b-row>
 
       <b-row>
         <b-col>
           <b-table :items="users" :fields="fields">
-            <template #cell(operators)="{ item }">
-              Product {{ item.productId }}
-              <b-button @click="editProduct(item)">แก้ไข</b-button
+            <template #cell(action)="{ item }">
+              Product {{ item.userId }}
+              <b-button @click="editUser(item)">แก้ไข</b-button
               ><b-button
                 class="ml-1"
                 variant="danger"
-                @click="deleteProduct(item)"
+                @click="deleteUser(item)"
                 >ลบ</b-button
               >
             </template>
@@ -29,9 +29,9 @@
 <script>
 export default {
   methods: {
-    editProduct (item) {},
-    deleteProduct (item) {},
-    newProduct () {}
+    editUser (item) {},
+    deleteUser (item) {},
+    newUser () {}
   },
   data () {
     return {
@@ -40,7 +40,8 @@ export default {
         { key: 'name', label: 'ชื่อ-นามสกุล' },
         { key: 'status', label: 'สถานะ' },
         { key: 'userName', label: 'USERNAME' },
-        { key: 'password', label: 'PASSWORD' }
+        { key: 'password', label: 'PASSWORD' },
+        { key: 'action', label: 'Action' }
       ],
       users: [
         { userId: 1, name: 'Puchong sumalanukun', status: 'นักศึกษา', userName: '62160294', password: '*********' },
