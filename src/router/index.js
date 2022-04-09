@@ -16,19 +16,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
   },
   {
-    path: '/main',
-    name: 'Mainmenu',
-    component: () => import('../views/Main.vue')
-  },
-  {
     path: '/login',
     name: 'Login',
     component: () => import('../views/Login.vue')
   },
   {
-    path: '/management',
-    name: 'Management',
-    component: () => import('../views/Management.vue')
+    path: '/manageroom',
+    name: 'ManageRoom',
+    component: () => import('../views/Rooms/RoomTable.vue')
+  },
+  {
+    path: '/booking',
+    name: 'Booking',
+    component: () => import('../views/Booking.vue')
   }
 ]
 
