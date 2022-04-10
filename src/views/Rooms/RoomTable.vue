@@ -7,12 +7,14 @@
       <b-row>
         <b-col>
           <b-table :items="numRoom" :fields="fields">
-           <template #cell(operators)="{ item }">
-             <b-button variant="danger" @click="editRoom(item)">แก้ไข</b-button>
-           </template>
-           <template #cell(building)="{ item }">
-             {{ getBuilding(item.building) }}
-           </template>
+            <template #cell(operators)="{ item }">
+              <b-button variant="danger" @click="editRoom(item)"
+                >แก้ไข</b-button
+              >
+            </template>
+            <template #cell(building)="{ item }">
+              {{ getBuilding(item.building) }}
+            </template>
           </b-table>
         </b-col>
       </b-row>
@@ -22,15 +24,13 @@
 <script>
 import axios from 'axios'
 export default {
-  components: {
-
-  },
+  components: {},
   methods: {
-    async getBuilding (item) {
+    getBuilding (item) {
       const self = this
-      console.log('.')
-      await axios.get('http://localhost:3000/building/' + item).then(
-        (response) => {
+      if (self.isBuilding === false) {
+        console.log(item)
+        axios.get('http://localhost:3000/building/' + item).then((response) => {
           // const building = response.data.map(function (items) {
           //   return {
           //     name: items.name
@@ -38,21 +38,19 @@ export default {
           // })
           // this.buildingSelect = building
           self.buildingSelect = response.data
-        }
-      )
+          console.log(self.buildingSelect.name)
+        })
+        self.isBuilding = true
+      }
       return self.buildingSelect.name
     },
-    editRoom (item) {
-
-    },
+    editRoom (item) {},
     getRooms () {
       const self = this
-      axios.get('http://localhost:3000/room').then(
-        (response) => {
-          console.log(response)
-          self.numRoom = response.data
-        }
-      )
+      axios.get('http://localhost:3000/room').then((response) => {
+        console.log(response)
+        self.numRoom = response.data
+      })
       console.log(this.fields)
     }
   },
@@ -68,12 +66,12 @@ export default {
       ],
       numRoom: [],
       selectedItem: null,
-      buildingSelect: {}
+      buildingSelect: {},
+      isBuilding: false
     }
   },
   mounted () {
     this.getRooms()
-    this.getBuilding()
   }
 }
 </script>
