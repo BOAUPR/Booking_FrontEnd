@@ -1,9 +1,20 @@
 <template>
   <div>
     <b-container fluid>
+      <b-navbar>
+      <b-navbar-brand href="#">จัดการผู้ใช้งาน</b-navbar-brand>
+      <!-- Right aligned nav items -->
+      <b-navbar-nav class="ml-auto">
+        <b-nav-form>
+          <b-form-input size="sm" class="mr-sm-2" placeholder="ค้นหา"></b-form-input>
+          <b-button size="sm" class="my-2 my-sm-0" type="submit" >ค้นหา</b-button>
+        </b-nav-form>
+      </b-navbar-nav>
+    </b-navbar>
+
       <b-row>
         <b-col class="text-right">
-          <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button>
+          <!-- <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button> -->
         </b-col>
       </b-row>
 
@@ -27,30 +38,55 @@
   </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
   methods: {
     editUser (item) {},
     deleteUser (item) {},
-    newUser () {}
+    getIsInstitution (item) {
+      const self = this
+      if (self.isInstitution === false) {
+        console.log(item)
+        axios.get('http://localhost:3000/institutions/' + item).then((response) => {
+          self.isInstitutionSelect = response.data
+          console.log(self.isInstitutionSelect.name)
+        })
+        self.isInstitution = true
+      }
+      return self.isInstitutionSelect.name
+    },
+    getUsers () {
+      const self = this
+      axios.get('http://localhost:3000/users').then(
+        function (response) {
+          console.log(response)
+          self.users = response.data
+        }
+      )
+      console.log(this.fields)
+    }
   },
+
   data () {
     return {
       fields: [
-        { key: 'userId', label: 'ลำดับ' },
-        { key: 'name', label: 'ชื่อ-นามสกุล' },
-        { key: 'status', label: 'สถานะ' },
-        { key: 'userName', label: 'USERNAME' },
-        { key: 'password', label: 'PASSWORD' },
+        { key: '_id', label: 'ลำดับ' },
+        // { key: 'username', label: 'USERNAME' },
+        // { key: 'password', label: 'PASSWORD' },
+        { key: 'name', label: 'ชื่อ' },
+        { key: 'surname', label: 'นามสกุล' },
+        { key: 'roles', label: 'สถานะ' },
+        { key: 'institution', label: 'หน่วยงาน' },
         { key: 'action', label: 'Action' }
       ],
-      users: [
-        { userId: 1, name: 'Puchong sumalanukun', status: 'นักศึกษา', userName: '62160294', password: '*********' },
-        { userId: 2, name: 'Test1', status: 'นักศึกษา', userName: '62******', password: '*********' },
-        { userId: 3, name: 'Test2', status: 'นักศึกษา', userName: '62******', password: '*********' },
-        { userId: 4, name: 'Test3', status: 'นักศึกษา', userName: '62******', password: '*********' },
-        { userId: 5, name: 'Test4', status: 'นักศึกษา', userName: '62******', password: '*********' }
-      ]
+      users: [],
+      isInstitutionSelect: {},
+      isInstitution: false
     }
+  },
+  mounted () {
+    this.getUsers()
   }
 }
 </script>
