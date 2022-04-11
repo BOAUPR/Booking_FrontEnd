@@ -12,6 +12,19 @@
                 >แก้ไข</b-button
               >
             </template>
+
+            <template #cell(name)="{ item }">
+              {{ item.code }} - {{ item.name }}
+            </template>
+
+            <template #cell(building)="{ item }">
+              {{ item.building.name }}
+            </template>
+
+            <template #cell(approveres)="{ item }">
+              {{ getApprover2(item.approveres) }}
+            </template>
+
           </b-table>
         </b-col>
       </b-row>
@@ -23,44 +36,31 @@ import axios from 'axios'
 export default {
   components: {},
   methods: {
-    getBuilding (item, i) {
-      console.log(item)
-      axios.get('http://localhost:3000/building/' + item).then((response) => {
-        this.buildingSelect = response.data
-        console.log('Name :' + this.buildingSelect.name)
-        this.numRoom[i].building = this.buildingSelect.name
-        return this.buildingSelect.name
-      })
-    },
-    getApprover (item, i, j) {
-      console.log(item)
-      axios.get('http://localhost:3000/users/' + item).then((response) => {
-        this.approverSelect = response.data
-        console.log('Name :' + this.approverSelect.name + ' J = ' + j)
-        this.numRoom[i].approveres[j] = this.approverSelect.name + ' ' + this.approverSelect.surname
-        return this.approverSelect.name
-      })
-    },
     editRoom (item) {},
     getRooms () {
       axios.get('http://localhost:3000/room').then((response) => {
         console.log(response)
         this.numRoom = response.data
-        for (let i = 0; i < this.numRoom.length; i++) {
-          this.getBuilding(this.numRoom[i].building, i)
-          for (let j = 0; j < this.numRoom[i].approveres.length; j++) {
-            console.log(j)
-            this.getApprover(this.numRoom[i].approveres[j], i, j)
-          }
-        }
       })
       console.log(this.fields)
+    },
+    getApprover2 (item) {
+      console.log(item)
+      var approv = []
+      for (let index = 0; index < item.length; index++) {
+        approv += item[index].name + ' ' + item[index].surname + ''
+        if (index !== item.length - 1) {
+          approv += ', '
+        }
+      }
+      console.log(approv)
+      return approv
     }
   },
   data () {
     return {
       fields: [
-        { key: '_id', label: 'ไอดี' },
+        { key: 'name', label: 'รหัสห้อง' },
         { key: 'capacity', label: 'ความจุ' },
         { key: 'floor', label: 'จำนวนชั้น' },
         { key: 'building', label: 'อาคาร' },
