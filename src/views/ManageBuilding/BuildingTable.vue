@@ -27,7 +27,7 @@ export default {
   data () {
     return {
       fields: [
-        { key: '_id', label: 'ไอดี' },
+        // { key: '_id', label: 'ไอดี' },
         { key: 'code', label: 'รหัส' },
         { key: 'name', label: 'ชื่ออาคาร' },
         { key: 'floor', label: 'จำนวนชั้น' },
@@ -35,22 +35,48 @@ export default {
         { key: 'institution', label: 'หน่วยงาน' },
         { key: 'operators', label: 'กระบวนการ' }
       ],
-      numBuilding: []
+      numBuilding: [],
+      roomSelect: {},
+      institutionSelect: {}
     }
   },
   methods: {
+    getRooms (item, i, j) {
+      axios.get('http://localhost:3000/room/' + item).then((response) => {
+        this.roomSelect = response.data
+        console.log('Name :' + this.roomSelect.name + ' J = ' + j)
+        this.numBuilding[i].rooms[j] = this.roomSelect.name
+        console.log(this.numBuilding[i].rooms[j])
+        return this.roomSelect.name
+      })
+    },
+    getInnstitution (item, i, j) {
+      axios.get('http://localhost:3000/institution/' + item).then((response) => {
+        this.institutionSelect = response.data
+        console.log('Name :' + this.institutionSelect.name + ' J = ' + j)
+        this.numBuilding[i].institution[j] = this.institutionSelect.name
+        console.log(this.numBuilding[i].institution[j])
+        console.log('Nooooooo')
+        return this.institutionSelect.name
+      })
+    },
     getBuilding () {
       axios.get('http://localhost:3000/building').then((response) => {
         console.log(response)
         this.numBuilding = response.data
-        // for (let i = 0; i < this.numRoom.length; i++) {
+        for (let i = 0; i < this.numBuilding.length; i++) {
         //   this.getBuilding(this.numRoom[i].building, i)
-        //   for (let j = 0; j < this.numRoom[i].approveres.length; j++) {
-        //     console.log(j)
-        //     this.getApprover(this.numRoom[i].approveres[j], i, j)
-        //   }
-        // }
+          for (let j = 0; j < this.numBuilding[i].rooms.length; j++) {
+            console.log(j)
+            this.getRooms(this.numBuilding[i].rooms[j], i, j)
+          }
+          for (let j = 0; j < this.numBuilding[i].institution.length; j++) {
+            console.log(j)
+            this.getInnstitution(this.numBuilding[i].institution[j], i, j)
+          }
+        }
       })
+      console.log(this.fields)
     }
   },
   mounted () {
