@@ -26,16 +26,19 @@ export default {
     getBuilding (item, i) {
       console.log(item)
       axios.get('http://localhost:3000/building/' + item).then((response) => {
-        // const building = response.data.map(function (items) {
-        //   return {
-        //     name: items.name
-        //   }
-        // })
-        // this.buildingSelect = building
         this.buildingSelect = response.data
         console.log('Name :' + this.buildingSelect.name)
         this.numRoom[i].building = this.buildingSelect.name
         return this.buildingSelect.name
+      })
+    },
+    getApprover (item, i, j) {
+      console.log(item)
+      axios.get('http://localhost:3000/users/' + item).then((response) => {
+        this.approverSelect = response.data
+        console.log('Name :' + this.approverSelect.name + ' J = ' + j)
+        this.numRoom[i].approveres[j] = this.approverSelect.name + ' ' + this.approverSelect.surname
+        return this.approverSelect.name
       })
     },
     editRoom (item) {},
@@ -45,6 +48,10 @@ export default {
         this.numRoom = response.data
         for (let i = 0; i < this.numRoom.length; i++) {
           this.getBuilding(this.numRoom[i].building, i)
+          for (let j = 0; j < this.numRoom[i].approveres.length; j++) {
+            console.log(j)
+            this.getApprover(this.numRoom[i].approveres[j], i, j)
+          }
         }
       })
       console.log(this.fields)
@@ -62,17 +69,14 @@ export default {
       ],
       numRoom: [],
       selectedItem: null,
-      buildingSelect: { name: 'non' },
-      isBuilding: false
+      buildingSelect: {},
+      approverSelect: {}
     }
   },
   mounted () {
     this.getRooms()
   },
   computed: {
-    getBuildById: function (item) {
-      return this.getBuilding(item)
-    }
   }
 }
 </script>
