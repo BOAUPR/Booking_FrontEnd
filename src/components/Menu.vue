@@ -11,6 +11,7 @@
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> สถานะการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> รายการจอง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลผู้ใช้ </b-button></b-nav-item>
+      <b-nav-item to="/managebuilding"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลอาคาร </b-button></b-nav-item>
       <b-nav-item to="/manageroom"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลห้อง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary" @click="logout()"> ออกจากระบบ </b-button></b-nav-item>
     </b-nav>
