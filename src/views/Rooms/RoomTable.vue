@@ -12,9 +12,6 @@
                 >แก้ไข</b-button
               >
             </template>
-            <template #cell(building)="{ item }">
-              {{ getBuilding(item.building) }}
-            </template>
           </b-table>
         </b-col>
       </b-row>
@@ -26,30 +23,36 @@ import axios from 'axios'
 export default {
   components: {},
   methods: {
-    getBuilding (item) {
-      const self = this
-      if (self.isBuilding === false) {
-        console.log(item)
-        axios.get('http://localhost:3000/building/' + item).then((response) => {
-          // const building = response.data.map(function (items) {
-          //   return {
-          //     name: items.name
-          //   }
-          // })
-          // this.buildingSelect = building
-          self.buildingSelect = response.data
-          console.log(self.buildingSelect.name)
-        })
-        self.isBuilding = true
-      }
-      return self.buildingSelect.name
+    getBuilding (item, i) {
+      console.log(item)
+      axios.get('http://localhost:3000/building/' + item).then((response) => {
+        this.buildingSelect = response.data
+        console.log('Name :' + this.buildingSelect.name)
+        this.numRoom[i].building = this.buildingSelect.name
+        return this.buildingSelect.name
+      })
+    },
+    getApprover (item, i, j) {
+      console.log(item)
+      axios.get('http://localhost:3000/users/' + item).then((response) => {
+        this.approverSelect = response.data
+        console.log('Name :' + this.approverSelect.name + ' J = ' + j)
+        this.numRoom[i].approveres[j] = this.approverSelect.name + ' ' + this.approverSelect.surname
+        return this.approverSelect.name
+      })
     },
     editRoom (item) {},
     getRooms () {
-      const self = this
       axios.get('http://localhost:3000/room').then((response) => {
         console.log(response)
-        self.numRoom = response.data
+        this.numRoom = response.data
+        for (let i = 0; i < this.numRoom.length; i++) {
+          this.getBuilding(this.numRoom[i].building, i)
+          for (let j = 0; j < this.numRoom[i].approveres.length; j++) {
+            console.log(j)
+            this.getApprover(this.numRoom[i].approveres[j], i, j)
+          }
+        }
       })
       console.log(this.fields)
     }
@@ -67,11 +70,13 @@ export default {
       numRoom: [],
       selectedItem: null,
       buildingSelect: {},
-      isBuilding: false
+      approverSelect: {}
     }
   },
   mounted () {
     this.getRooms()
+  },
+  computed: {
   }
 }
 </script>

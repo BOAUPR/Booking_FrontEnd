@@ -26,6 +26,11 @@ const routes = [
     component: () => import('../views/Rooms/RoomTable.vue')
   },
   {
+    path: '/managebuilding',
+    name: 'ManageBuilding',
+    component: () => import('../views/ManageBuilding/BuildingTable.vue')
+  },
+  {
     path: '/booking',
     name: 'Booking',
     component: () => import('../views/Booking.vue')
@@ -36,9 +41,9 @@ const routes = [
     component: () => import('../views/Building.vue')
   },
   {
-    path: '/management',
-    name: 'Management',
-    component: () => import('../views/Management.vue')
+    path: '/room',
+    name: 'Room',
+    component: () => import('../views/Room.vue')
   }
 ]
 
