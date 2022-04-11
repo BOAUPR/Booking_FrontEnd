@@ -12,11 +12,11 @@
       </b-navbar-nav>
     </b-navbar>
 
-      <b-row>
+      <!-- <b-row>
         <b-col class="text-right">
-          <!-- <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button> -->
+          <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button>
         </b-col>
-      </b-row>
+      </b-row> -->
 
       <b-row>
         <b-col>
@@ -45,16 +45,11 @@ export default {
     editUser (item) {},
     deleteUser (item) {},
     getIsInstitution (item) {
-      const self = this
-      if (self.isInstitution === false) {
-        console.log(item)
-        axios.get('http://localhost:3000/institutions/' + item).then((response) => {
-          self.isInstitutionSelect = response.data
-          console.log(self.isInstitutionSelect.name)
-        })
-        self.isInstitution = true
-      }
-      return self.isInstitutionSelect.name
+      axios.get('http://localhost:3000/institutions/' + item).then((response) => {
+        this.institutionSelect = response.data
+        console.log('Name' + this.institutionSelect.name)
+        return this.institutionSelect.name
+      })
     },
     getUsers () {
       const self = this
@@ -81,7 +76,8 @@ export default {
         { key: 'action', label: 'Action' }
       ],
       users: [],
-      isInstitutionSelect: {},
+      selectedItem: null,
+      institutionSelect: {},
       isInstitution: false
     }
   },
