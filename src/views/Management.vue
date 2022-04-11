@@ -31,6 +31,21 @@
                 >ลบ</b-button
               >
             </template>
+            <template #cell(_id)="{ item }">
+              {{ item._id }}
+            </template>
+            <template #cell(name)="{ item }">
+              {{ item.name }}
+            </template>
+            <template #cell(surname)="{ item }">
+              {{ item.surname }}
+            </template>
+            <template #cell(roles)="{ item }">
+              {{ item.roles }}
+            </template>
+            <template #cell(institution)="{ item }">
+              {{ item.institution.name }}
+            </template>
           </b-table>
         </b-col>
       </b-row>
