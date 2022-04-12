@@ -23,6 +23,35 @@
           >
           </b-form-input>
        </b-form-group>
+
+       <b-form-group
+        id="form-group-building-name"
+        label="ชื่ออาคาร"
+        label-for="building-name"
+       >
+        <b-form-input
+            type="text"
+            id="building-name"
+            v-model="form.name"
+            :state="validateName"
+          >
+          </b-form-input>
+       </b-form-group>
+
+       <b-form-group
+        id="form-group-building-floor"
+        label="ชื่ออาคาร"
+        label-for="building-floor"
+       >
+        <b-form-input
+            type="number"
+            id="building-floor"
+            v-model="form.floor"
+            :state="validateFloor"
+          >
+          </b-form-input>
+       </b-form-group>
+
      </b-form>
      <b-card>
         <pre>
@@ -49,6 +78,20 @@ export default {
         institution: {}
       },
       isAddNew: false
+    }
+  },
+  computed: {
+    validateName () {
+      return this.form.name.length >= 3
+    },
+    validateFloor () {
+      return this.form.floor >= 1
+    },
+    validateCode () {
+      return this.form.name.length >= 1
+    },
+    validateForm () {
+      return this.validateName && this.validateFloor && this.validateCode
     }
   },
   methods: {
@@ -85,11 +128,21 @@ export default {
     },
     handleOk (evt) {
       evt.preventDefault()
-      // if (!this.validateForm) return
+      if (!this.validateForm) return
       this.submit()
       this.$nextTick(() => {
         this.$bvModal.hide('modal-building')
       })
+    },
+    resetModal () {
+      this.form = {
+        _id: '',
+        code: '',
+        name: '',
+        floor: 1,
+        rooms: [{}],
+        institution: {}
+      }
     }
   }
 }

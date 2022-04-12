@@ -54,6 +54,28 @@ export default {
     }
   },
   methods: {
+    makeToast (title, message, variant = 'success', append = false) {
+      this.toastCount++
+      this.$bvToast.toast(message, {
+        title: title,
+        variant: variant,
+        autoHideDelay: 3000,
+        appendToast: append
+      })
+    },
+    saveBuilding (building) {
+      console.log('Submit', building)
+      axios.put('http://localhost:3000/building/' + building._id, building).then(
+        (response) => {
+          const updateBuilding = response.data
+          console.log(updateBuilding)
+          this.getBuilding()
+          this.makeToast('แก้ไขสำเร็จ', 'อาคาร ' + updateBuilding._id + ' แก้ไขแล้ว')
+        }
+      ).catch(() => {
+        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + building._id, 'danger')
+      })
+    },
     getRooms (item) {
       var rooms = []
       for (let index = 0; index < item.length; index++) {
