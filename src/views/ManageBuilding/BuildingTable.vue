@@ -2,7 +2,12 @@
   <div>
     <b-container fluid>
       <b-row>
-        <b-col></b-col>
+        <b-col>
+          <BuildingForm :building="selectedItem"
+            ref="buildingForm"
+            @save="saveBuilding">
+          </BuildingForm>
+        </b-col>
       </b-row>
       <b-row>
         <b-col>
@@ -26,8 +31,13 @@
   </div>
 </template>
 <script>
+
 import axios from 'axios'
+import BuildingForm from './BuildingForm.vue'
 export default {
+  components: {
+    BuildingForm
+  },
   data () {
     return {
       fields: [
@@ -40,8 +50,7 @@ export default {
         { key: 'operators', label: 'กระบวนการ' }
       ],
       numBuilding: [],
-      roomSelect: {},
-      institutionSelect: {}
+      selectedItem: null
     }
   },
   methods: {
@@ -53,18 +62,19 @@ export default {
           rooms += ', '
         }
       }
-      console.log(rooms)
       return rooms
     },
-    getInnstitution (item) {
-
+    editBuilding (item) {
+      console.log('....')
+      this.selectedItem = JSON.parse(JSON.stringify(item))
+      this.$nextTick(() => {
+        this.$refs.buildingForm.show()
+      })
     },
     getBuilding () {
       axios.get('http://localhost:3000/building').then((response) => {
-        console.log(response)
         this.numBuilding = response.data
       })
-      console.log(this.fields)
     }
   },
   mounted () {

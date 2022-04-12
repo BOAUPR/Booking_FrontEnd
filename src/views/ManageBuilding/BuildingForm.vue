@@ -1,0 +1,99 @@
+<template>
+  <div>
+    <b-modal
+     id="modal-building"
+     ref="modalBuilding"
+     title="จัดการตึก"
+     @show="showModal"
+     @hidden="resetModal"
+     @ok="handleOk"
+    >
+     <b-form @submit.prevent="submit()" @reset.prevent="reset()">
+       <b-form-group
+        id="form-group-building-code"
+        label="รหัสย่ออาคาร"
+        label-for="building-code"
+       >
+        <b-form-input
+            type="text"
+            id="building-code"
+            v-model="form.code"
+            :state="validateCode"
+            autofocus
+          >
+          </b-form-input>
+       </b-form-group>
+     </b-form>
+     <b-card>
+        <pre>
+        {{ form }}
+      </pre
+        >
+      </b-card>
+    </b-modal>
+  </div>
+</template>
+<script>
+export default {
+  props: {
+    building: Object
+  },
+  data () {
+    return {
+      form: {
+        _id: '',
+        code: '',
+        name: '',
+        floor: 1,
+        rooms: [{}],
+        institution: {}
+      },
+      isAddNew: false
+    }
+  },
+  methods: {
+    show () {
+      this.$refs.modalBuilding.show()
+    },
+    reset () {
+      this.form = {
+        _id: '',
+        code: '',
+        name: '',
+        floor: 1,
+        rooms: [{}],
+        institution: {}
+      }
+    },
+    showModal (evt) {
+      if (this.isAddNew) {
+        this.reset()
+      } else {
+        this.form._id = this.building._id
+        this.form.code = this.building.code
+        this.form.name = this.building.name
+        this.form.floor = this.building.floor
+        this.form.rooms = this.building.rooms
+        this.form.institution = this.building.institution
+      }
+    },
+    submit () {
+      const building = JSON.parse(JSON.stringify(this.form))
+      // building.price = parseFloat(product.price)
+      this.$emit('save', building)
+      this.reset()
+    },
+    handleOk (evt) {
+      evt.preventDefault()
+      // if (!this.validateForm) return
+      this.submit()
+      this.$nextTick(() => {
+        this.$bvModal.hide('modal-building')
+      })
+    }
+  }
+}
+</script>
+<style>
+
+</style>
