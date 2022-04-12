@@ -2,7 +2,7 @@
   <div class="app-menu min-vh-100">
     <b-img src="../assets/chicken.jpg" width="100%" center class="pt-4 pb-4"></b-img>
     <div class="h3">
-      User
+      {{ isRole }}
     </div>
     <br>
     <br>
@@ -24,6 +24,11 @@ export default {
   methods: {
     logout () {
       this.$store.dispatch('auth/logout')
+    }
+  },
+  computed: {
+    isRole () {
+      return this.$store.getters['auth/isRole']
     }
   }
 }
