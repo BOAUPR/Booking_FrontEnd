@@ -2,7 +2,12 @@
   <div>
     <b-container fluid>
       <b-row>
-        <b-col></b-col>
+        <b-col>
+          <RoomForm :room="selectedItem" :approvs="allApprov"
+            ref="roomForm"
+            @save="saveRoom">
+          </RoomForm>
+        </b-col>
       </b-row>
       <b-row>
         <b-col>
@@ -33,10 +38,40 @@
 </template>
 <script>
 import axios from 'axios'
+import RoomForm from './RoomForm.vue'
 export default {
-  components: {},
+  components: {
+    RoomForm
+  },
   methods: {
-    editRoom (item) {},
+    makeToast (title, message, variant = 'success', append = false) {
+      this.toastCount++
+      this.$bvToast.toast(message, {
+        title: title,
+        variant: variant,
+        autoHideDelay: 3000,
+        appendToast: append
+      })
+    },
+    saveRoom (room) {
+      console.log('Submit', room)
+      axios.put('http://localhost:3000/room/' + room._id, room).then(
+        (response) => {
+          const updateRoom = response.data
+          console.log(updateRoom)
+          this.getRooms()
+          this.makeToast('แก้ไขสำเร็จ', 'ห้อง ' + updateRoom._id + ' แก้ไขแล้ว')
+        }
+      ).catch(() => {
+        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + room._id, 'danger')
+      })
+    },
+    editRoom (item) {
+      this.selectedItem = JSON.parse(JSON.stringify(item))
+      this.$nextTick(() => {
+        this.$refs.roomForm.show()
+      })
+    },
     getRooms () {
       axios.get('http://localhost:3000/room').then((response) => {
         console.log(response)
@@ -55,6 +90,12 @@ export default {
       }
       console.log(approv)
       return approv
+    },
+    getAllApprover () {
+      const self = this
+      axios.get('http://localhost:3000/users/approveres').then((response) => {
+        self.allApprov = response.data
+      })
     }
   },
   data () {
@@ -62,19 +103,22 @@ export default {
       fields: [
         { key: 'name', label: 'รหัสห้อง' },
         { key: 'capacity', label: 'ความจุ' },
-        { key: 'floor', label: 'จำนวนชั้น' },
+        { key: 'floor', label: 'ชั้น' },
         { key: 'building', label: 'อาคาร' },
+        { key: 'equipment', label: 'อุปกรณ์ภายในห้อง' },
         { key: 'approveres', label: 'ผู้พิจารณา' },
         { key: 'operators', label: 'กระบวนการ' }
       ],
       numRoom: [],
       selectedItem: null,
       buildingSelect: {},
-      approverSelect: {}
+      approverSelect: {},
+      allApprov: []
     }
   },
   mounted () {
     this.getRooms()
+    this.getAllApprover()
   },
   computed: {
   }

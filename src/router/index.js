@@ -46,9 +46,24 @@ const routes = [
     component: () => import('../views/Room.vue')
   },
   {
+    path: '/status',
+    name: 'Status',
+    component: () => import('../views/StatusBooking.vue')
+  },
+  {
     path: '/manageuser',
-    name: 'Management',
+    name: 'ManageUser',
     component: () => import('../views/ManageUser/ManageUser.vue')
+  },
+  {
+    path: '/building/:buildingid/room',
+    component: () => import('../views/Room.vue'),
+    props: true
+  },
+  {
+    path: '/room/:roomid/booking',
+    component: () => import('../views/Booking.vue'),
+    props: true
   }
 ]
 

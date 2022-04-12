@@ -2,7 +2,12 @@
   <div>
     <b-container fluid>
       <b-row>
-        <b-col></b-col>
+        <b-col>
+          <BuildingForm :building="selectedItem"
+            ref="buildingForm"
+            @save="saveBuilding">
+          </BuildingForm>
+        </b-col>
       </b-row>
       <b-row>
         <b-col>
@@ -26,8 +31,13 @@
   </div>
 </template>
 <script>
+
 import axios from 'axios'
+import BuildingForm from './BuildingForm.vue'
 export default {
+  components: {
+    BuildingForm
+  },
   data () {
     return {
       fields: [
@@ -40,11 +50,32 @@ export default {
         { key: 'operators', label: 'กระบวนการ' }
       ],
       numBuilding: [],
-      roomSelect: {},
-      institutionSelect: {}
+      selectedItem: null
     }
   },
   methods: {
+    makeToast (title, message, variant = 'success', append = false) {
+      this.toastCount++
+      this.$bvToast.toast(message, {
+        title: title,
+        variant: variant,
+        autoHideDelay: 3000,
+        appendToast: append
+      })
+    },
+    saveBuilding (building) {
+      console.log('Submit', building)
+      axios.put('http://localhost:3000/building/' + building._id, building).then(
+        (response) => {
+          const updateBuilding = response.data
+          console.log(updateBuilding)
+          this.getBuilding()
+          this.makeToast('แก้ไขสำเร็จ', 'อาคาร ' + updateBuilding._id + ' แก้ไขแล้ว')
+        }
+      ).catch(() => {
+        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + building._id, 'danger')
+      })
+    },
     getRooms (item) {
       var rooms = []
       for (let index = 0; index < item.length; index++) {
@@ -53,18 +84,19 @@ export default {
           rooms += ', '
         }
       }
-      console.log(rooms)
       return rooms
     },
-    getInnstitution (item) {
-
+    editBuilding (item) {
+      console.log('....')
+      this.selectedItem = JSON.parse(JSON.stringify(item))
+      this.$nextTick(() => {
+        this.$refs.buildingForm.show()
+      })
     },
     getBuilding () {
       axios.get('http://localhost:3000/building').then((response) => {
-        console.log(response)
         this.numBuilding = response.data
       })
-      console.log(this.fields)
     }
   },
   mounted () {
