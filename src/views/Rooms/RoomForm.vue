@@ -85,6 +85,28 @@
         label="ผู้พิจารณา"
         label-for="room-approveres"
        >
+        <b-form-select v-model="form.approveres[0]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[0]"> {{ form.approveres[0].name }}  {{ form.approveres[0].surname }}</b-form-select-option>
+          </template>
+        </b-form-select>
+
+        <b-form-select v-model="form.approveres[1]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[1]"> {{ form.approveres[1].name }}  {{ form.approveres[1].surname }}</b-form-select-option>
+          </template>
+        </b-form-select>
+
+        <b-form-select v-model="form.approveres[2]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[2]"> {{ form.approveres[2].name }}  {{ form.approveres[2].surname }} </b-form-select-option>
+          </template>
+        </b-form-select>
+
+        <!-- <tr v-for="approv in approvs" :key="approv._id">
+           {{ approv.name }} {{ approv.surname }} : <input type="checkbox" :value="approv._id" v-model="form.approveres" @change="check">
+        </tr> -->
+
        </b-form-group>
 
      </b-form>
@@ -98,9 +120,11 @@
   </div>
 </template>
 <script>
+// import axios from 'axios'
 export default {
   props: {
-    room: Object
+    room: Object,
+    approvs: Array
   },
   data () {
     return {
@@ -114,7 +138,12 @@ export default {
         building: {},
         approveres: [{}]
       },
-      isAddNew: false
+      allApprov2: [],
+      isAddNew: false,
+      allApprov: [],
+      selectApprov1: { value: {}, text: 'sumo' },
+      selectApprov2: null,
+      selectApprov3: null
     }
   },
   computed: {
@@ -138,6 +167,45 @@ export default {
     }
   },
   methods: {
+    checkNullApprov (item) {
+      if (item == null) {
+        return false
+      } else { return true }
+    },
+    check (e) {
+      this.$nextTick(() => {
+        if (e.target.checked) {
+          console.log(e.target.value) // Pass this value in API
+        }
+      })
+    },
+
+    // getAllApprov () {
+    //   const self = this
+    //   axios.get('http://localhost:3000/users/approveres').then((response) => {
+    //     self.allApprov2 = response.data
+    //   })
+    //   console.log('----------')
+    //   console.log(this.allApprov2)
+    //   for (let index = 0; index < this.allApprov2.length; index++) {
+    //     this.allApprov[index].value = this.allApprov2[index]
+    //     this.allApprov[index].text = this.allApprov2[index].name
+    //   }
+
+    //   console.log(this.allApprov)
+    //   console.log(this.allApprov2[0].surname)
+    // },
+    getValueApprover () {
+      console.log(this.allApprov2)
+      for (const i of this.allApprov2) {
+        this.allApprov.push({
+          value: i,
+          text: i.name + ' ' + i.surname
+        })
+      }
+      console.log('--------')
+      console.log(this.allApprov)
+    },
     show () {
       this.$refs.modalRoom.show()
     },
@@ -152,6 +220,7 @@ export default {
         building: {},
         approveres: [{}]
       }
+      this.allApprov = []
     },
     showModal (evt) {
       if (this.isAddNew) {
@@ -165,6 +234,8 @@ export default {
         this.form.building = this.room.building
         this.form.equipment = this.room.equipment
         this.form.approveres = this.room.approveres
+        this.allApprov2 = this.approvs
+        this.getValueApprover()
       }
     },
     submit () {
@@ -192,7 +263,10 @@ export default {
         building: {},
         approveres: [{}]
       }
+      this.allApprov = []
     }
+  },
+  mounted () {
   }
 }
 </script>

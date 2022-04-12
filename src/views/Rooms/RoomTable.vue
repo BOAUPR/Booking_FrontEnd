@@ -3,7 +3,7 @@
     <b-container fluid>
       <b-row>
         <b-col>
-          <RoomForm :room="selectedItem"
+          <RoomForm :room="selectedItem" :approvs="allApprov"
             ref="roomForm"
             @save="saveRoom">
           </RoomForm>
@@ -90,6 +90,12 @@ export default {
       }
       console.log(approv)
       return approv
+    },
+    getAllApprover () {
+      const self = this
+      axios.get('http://localhost:3000/users/approveres').then((response) => {
+        self.allApprov = response.data
+      })
     }
   },
   data () {
@@ -106,11 +112,13 @@ export default {
       numRoom: [],
       selectedItem: null,
       buildingSelect: {},
-      approverSelect: {}
+      approverSelect: {},
+      allApprov: []
     }
   },
   mounted () {
     this.getRooms()
+    this.getAllApprover()
   },
   computed: {
   }
