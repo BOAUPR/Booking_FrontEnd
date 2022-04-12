@@ -18,21 +18,20 @@
         </b-col>
       </b-row> -->
 
-      <!-- <b-row>
+      <b-row>
         <b-col class="text-right">
           <ManageUserForm
-            :product="selectedItem"
-            ref="productForm"
-            @save="saveProduct"
+            :user="selectedItem"
+            ref="manageUserForm"
+            @save="saveUser"
           ></ManageUserForm>
         </b-col>
-      </b-row> -->
+      </b-row>
 
       <b-row>
         <b-col>
           <b-table :items="users" :fields="fields">
             <template #cell(action)="{ item }">
-              <!-- Product {{ item.userId }} -->
               <b-button @click="editUser(item)">แก้ไข</b-button
               ><b-button
                 class="ml-1"
@@ -40,9 +39,6 @@
                 @click="deleteUser(item)"
                 >ลบ</b-button
               >
-            </template>
-            <template #cell(_id)="{ item }">
-              {{ item._id }}
             </template>
             <template #cell(name)="{ item }">
               {{ getName(item.name,item.surname) }}
@@ -62,14 +58,80 @@
 <script>
 
 import axios from 'axios'
-// import ManageUserForm from 'ManageUserForm'
+import ManageUserForm from './ManageUserForm.vue'
 export default {
   components: {
-    // ManageUserForm
+    ManageUserForm
   },
   methods: {
-    editUser (item) {},
-    deleteUser (item) {},
+    editUser (item) {
+      this.selectedItem = JSON.parse(JSON.stringify(item))
+      this.$nextTick(() => {
+        this.$refs.userForm.show()
+      })
+    },
+    deleteUser (item) {
+      if (confirm(`คุณต้องการลบ ${item.name} หรือไม่?`)) {
+        axios
+          .delete('http://localhost:3000/users/' + item._id)
+          .then(
+            function (response) {
+              this.getUsers()
+              this.makeToast('ลบสำเร็จ', 'สินค้า ' + item._id + ' ถูกลบแล้ว')
+            }.bind(this)
+          )
+          .catch(() => {
+            this.makeToast(
+              'ลบไม่สำเร็จ',
+              'ไม่สามารถลบ ' + item._id + 'danger'
+            )
+          })
+      }
+    },
+    saveUser (item) {
+      console.log('Submit', item)
+      if (item._id === '') {
+        // Add New
+        axios
+          .post('http://localhost:3000/users', item)
+          .then(
+            function (response) {
+              const newUser = response.data
+              this.getUsers()
+              this.makeToast(
+                'เพิ่มสำเร็จ',
+                'ผู้ใช้งาน ' + newUser._id + ' ถูกเพิ่มแล้ว'
+              )
+            }.bind(this)
+          )
+          .catch(() => {
+            this.makeToast(
+              'เพิ่มไม่สำเร็จ',
+              'ไม่สามารถเพิ่ม ' + item._id + 'danger'
+            )
+          })
+      } else {
+        // Updata
+        axios
+          .put('http://localhost:3000/users/' + item._id, item)
+          .then(
+            function (response) {
+              const updateUser = response.data
+              this.getUsers()
+              this.makeToast(
+                'ปรับปรุงสำเร็จ',
+                'ผู้ใช้งาน ' + updateUser._id + ' ถูกแก้ไขแล้ว'
+              )
+            }.bind(this)
+          )
+          .catch(() => {
+            this.makeToast(
+              'ปรับปรุงไม่สำเร็จ',
+              'ไม่สามารถปรับปรุง ' + item._id + 'danger'
+            )
+          })
+      }
+    },
     getIsInstitution (item) {
       axios.get('http://localhost:3000/institutions/' + item).then((response) => {
         this.institutionSelect = response.data
@@ -109,11 +171,9 @@ export default {
   data () {
     return {
       fields: [
-        { key: '_id', label: 'ลำดับ' },
         // { key: 'username', label: 'USERNAME' },
         // { key: 'password', label: 'PASSWORD' },
         { key: 'name', label: 'ชื่อ - สกุล' },
-        // { key: 'surname', label: 'นามสกุล' },
         { key: 'roles', label: 'สถานะ' },
         { key: 'institution', label: 'หน่วยงาน' },
         { key: 'action', label: 'Action' }

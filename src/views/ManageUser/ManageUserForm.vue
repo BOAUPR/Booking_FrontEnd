@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button @click="addNew" variant="primary">เพิ่มผู้ใช้งาน</b-button>
+    <!-- <b-button @click="addNew" variant="primary">เพิ่มผู้ใช้งาน</b-button> -->
     <b-modal
       id="modal-user"
       ref="modalUser"
@@ -23,15 +23,13 @@
             :state="validateName"
           >
           </b-form-input>
-          <b-form-invalid-feedback :state="validateName">
-            ชื่อสินค้าต้องมีความยาวอย่าง 3 ตัวอักษร
-          </b-form-invalid-feedback>
         </b-form-group>
+
         <b-form-group
           id="form-group-user-surname"
-          label="ราคาสินค้า"
+          label="นามสกุล"
           label-for="user-surname"
-          :state="validatePrice"
+          :state="validateSurname"
           autofocus
         >
           <b-form-input
@@ -39,13 +37,45 @@
             id="product-surname"
             placeholder="นามสกุล"
             v-model="form.surname"
-            :state="validatePrice"
+            :state="validateSurname"
           >
           </b-form-input>
-          <!-- <b-form-invalid-feedback :state="validatePrice">
-            ราคาสินค้าต้องไม่น้อกว่าหรือเท่ากับ 0 บาท
-          </b-form-invalid-feedback> -->
         </b-form-group>
+
+        <b-form-group
+          id="form-group-user-roles"
+          label="สถานะ"
+          label-for="user-roles"
+          :state="validateRoles"
+          autofocus
+        >
+          <b-form-input
+            type="text"
+            id="product-roles"
+            placeholder="สถานะ"
+            v-model="form.roles"
+            :state="validateRoles"
+          >
+          </b-form-input>
+        </b-form-group>
+
+        <b-form-group
+          id="form-group-user-institution"
+          label="หน่วยงาน"
+          label-for="user-institution"
+          :state="validatePrice"
+          autofocus
+        >
+          <b-form-input
+            type="text"
+            id="product-institution"
+            placeholder="หน่วยงาน"
+            v-model="form.institution"
+            :state="validateInstitution"
+          >
+          </b-form-input>
+        </b-form-group>
+
       </b-form>
       <b-card>
         <pre>
@@ -59,7 +89,7 @@
 <script>
 export default {
   props: {
-    product: {
+    user: {
       type: Object
     }
   },
@@ -68,21 +98,23 @@ export default {
       form: {
         _id: '',
         name: '',
-        price: 0
+        surname: '',
+        roles: '',
+        institution: ''
       },
       isAddNew: false
     }
   },
   computed: {
-    validateName () {
-      return this.form.name.length >= 3
-    },
-    validatePrice () {
-      return this.form.price !== '' && this.form.price >= 0
-    },
-    validateForm () {
-      return this.validateName && this.validatePrice
-    }
+    // validateName () {
+    //   return this.form.name.length >= 3
+    // },
+    // validatePrice () {
+    //   return this.form.price !== '' && this.form.price >= 0
+    // },
+    // validateForm () {
+    //   return this.validateName && this.validatePrice
+    // }
   },
   methods: {
     addNew () {
@@ -93,19 +125,21 @@ export default {
       })
     },
     show () {
-      this.$refs.modalProduct.show()
+      this.$refs.modalUser.show()
     },
     submit () {
-      const product = JSON.parse(JSON.stringify(this.form))
-      product.price = parseFloat(product.price)
-      this.$emit('save', product)
+      const user = JSON.parse(JSON.stringify(this.form))
+      user.price = parseFloat(user.price)
+      this.$emit('save', user)
       this.reset()
     },
     reset () {
       this.form = {
         _id: '',
         name: '',
-        price: 0
+        surname: '',
+        roles: '',
+        institution: ''
       }
     },
     showModal (evt) {
@@ -113,9 +147,11 @@ export default {
         this.reset()
       } else {
         // Edit
-        this.form._id = this.product._id
-        this.form.name = this.product.name
-        this.form.price = this.product.price
+        this.form._id = this.user._id
+        this.form.name = this.user.name
+        this.form.surname = this.user.surname
+        this.form.roles = this.user.roles
+        this.form.institution = this.user.institution
       }
     },
     resetModal (evt) {
