@@ -40,6 +40,12 @@ export default {
   getters: {
     isLogin (state, getters) {
       return state.user != null
+    },
+    isRole (state, getters) {
+      return state.user.roles.toString()
+    },
+    isUserCurrent (state, getters) {
+      return state.user
     }
   }
 }

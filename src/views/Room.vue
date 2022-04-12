@@ -37,11 +37,11 @@ export default {
   data () {
     return {
       fields: [
-        { key: 'code', label: 'code' },
-        { key: 'name', label: 'name' },
-        { key: 'floor', label: 'floor' },
-        { key: 'equipment', label: 'equipment' },
-        { key: 'operators', label: 'action' }
+        { key: 'code', label: 'รหัส' },
+        { key: 'name', label: 'ห้อง' },
+        { key: 'floor', label: 'ชั้น' },
+        { key: 'equipment', label: 'อุปกรณ์ภายในห้อง' },
+        { key: 'operators', label: 'กระบวณการ' }
       ],
       building: [],
       numRoom: [],
