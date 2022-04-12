@@ -6,8 +6,8 @@
       <!-- Right aligned nav items -->
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
-          <b-form-input size="sm" class="mr-sm-2" placeholder="ค้นหา"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit" >ค้นหา</b-button>
+          <b-form-input id="search" size="sm" class="mr-sm-2" placeholder="ค้นหา"></b-form-input>
+          <b-button size="sm" class="my-2 my-sm-0" type="submit" >เพิ่มผู้ใช้งาน</b-button>
         </b-nav-form>
       </b-navbar-nav>
     </b-navbar>
@@ -15,6 +15,16 @@
       <!-- <b-row>
         <b-col class="text-right">
           <b-button @click="newUser()" variant="primary">เพิ่มใหม่</b-button>
+        </b-col>
+      </b-row> -->
+
+      <!-- <b-row>
+        <b-col class="text-right">
+          <ManageUserForm
+            :product="selectedItem"
+            ref="productForm"
+            @save="saveProduct"
+          ></ManageUserForm>
         </b-col>
       </b-row> -->
 
@@ -35,13 +45,10 @@
               {{ item._id }}
             </template>
             <template #cell(name)="{ item }">
-              {{ item.name }}
-            </template>
-            <template #cell(surname)="{ item }">
-              {{ item.surname }}
+              {{ getName(item.name,item.surname) }}
             </template>
             <template #cell(roles)="{ item }">
-              {{ item.roles }}
+              {{ getRolse(item.roles) }}
             </template>
             <template #cell(institution)="{ item }">
               {{ item.institution.name }}
@@ -55,7 +62,11 @@
 <script>
 
 import axios from 'axios'
+// import ManageUserForm from 'ManageUserForm'
 export default {
+  components: {
+    // ManageUserForm
+  },
   methods: {
     editUser (item) {},
     deleteUser (item) {},
@@ -75,6 +86,23 @@ export default {
         }
       )
       console.log(this.fields)
+    },
+    getRolse (item) {
+      var roles = []
+      for (let index = 0; index < item.length; index++) {
+        roles += item[index]
+        if (index !== item.length - 1) {
+          roles += ', '
+        }
+      }
+      console.log(roles)
+      return roles
+    },
+    getName (itemName, itemSurname) {
+      var name = ''
+      name += itemName + ' ' + itemSurname
+      console.log(name)
+      return name
     }
   },
 
@@ -84,8 +112,8 @@ export default {
         { key: '_id', label: 'ลำดับ' },
         // { key: 'username', label: 'USERNAME' },
         // { key: 'password', label: 'PASSWORD' },
-        { key: 'name', label: 'ชื่อ' },
-        { key: 'surname', label: 'นามสกุล' },
+        { key: 'name', label: 'ชื่อ - สกุล' },
+        // { key: 'surname', label: 'นามสกุล' },
         { key: 'roles', label: 'สถานะ' },
         { key: 'institution', label: 'หน่วยงาน' },
         { key: 'action', label: 'Action' }
