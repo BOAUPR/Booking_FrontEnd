@@ -13,41 +13,29 @@
         <b-form-group align="left" label="วัตถุประสงค์">
           <b-form-radio
             v-model="reason"
-            :aria-describedby="ariaDescribedby"
-            name="some-radios"
-            value="A"
+            value="ประชุม"
             >ประชุม</b-form-radio
           >
           <b-form-radio
             v-model="reason"
-            :aria-describedby="ariaDescribedby"
-            name="some-radios"
-            value="B"
+            value="ฝึกอบรม"
             >ฝึกอบรม</b-form-radio
           >
           <b-form-radio
             v-model="reason"
-            :aria-describedby="ariaDescribedby"
-            name="some-radios"
-            value="A"
+            value="สัมมนา"
             >สัมมนา</b-form-radio
           >
           <b-form-radio
             v-model="reason"
-            :aria-describedby="ariaDescribedby"
-            name="some-radios"
-            value="B"
+            value="จัดการเรียนการสอน"
             >จัดการเรียนการสอน</b-form-radio
           >
-          <b-form-radio
-            v-model="reason"
-            :aria-describedby="ariaDescribedby"
-            name="some-radios"
-            value="B"
-            >อื่น</b-form-radio
-          >
           <b-form-group label="เรื่อง" label-cols="1">
-            <b-form-input v-model="reason" type="text" placeholder=""></b-form-input>
+            <b-form-input
+              v-model="reason"
+              type="text"
+            ></b-form-input>
           </b-form-group>
           <label for="start-date">วันเริ่มต้น</label>
           <b-form-datepicker
@@ -64,9 +52,17 @@
             v-model="endDate"
           ></b-form-datepicker>
           <label for="start-time">เวลาเริ่มต้น</label
-          ><b-form-timepicker v-model="startTime" id="start-time" locale="th"></b-form-timepicker>
+          ><b-form-timepicker
+            v-model="startTime"
+            id="start-time"
+            locale="th"
+          ></b-form-timepicker>
           <label for="end-time">เวลาสิ้นสุด</label
-          ><b-form-timepicker v-model="endTime" id="end-time" locale="th"></b-form-timepicker>
+          ><b-form-timepicker
+            v-model="endTime"
+            id="end-time"
+            locale="th"
+          ></b-form-timepicker>
         </b-form-group>
       </b-col>
       <b-col>
@@ -74,23 +70,38 @@
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
             <span class="bd-content-title">ห้อง</span>
           </h1>
-          <p class="bd-lead; border border-dark; rounded">{{ roomb.code }} - {{ roomb.name }}</p>
+          <p class="bd-lead; border border-dark; rounded">
+            {{ roomb.code }} - {{ roomb.name }}
+          </p>
         </header>
-        <b-form-group label="จำนวนผู้เข้าร่วม" label-cols="3" align="left">
-          <b-form-input class="w-25 p-3"></b-form-input>คน
+        <b-row>
+          <b-col col lg="3"
+            ><b-form-group
+              class="w-1"
+              label="จำนวนผู้เข้าร่วม"
+              align="left"
+            ></b-form-group
+          ></b-col>
+          <b-col cols="12" md="auto"
+            ><b-form-input class="w-5 p-3" type="number" step="1"></b-form-input
+          ></b-col>
+          <b-col col lg="2">คน</b-col>
+        </b-row>
+        <b-form-group
+          label="อุปกรณืที่ต้องใช้"
+          align="left"
+        >
+        <b-form-input class="w-5 p-3" type="text"></b-form-input>
         </b-form-group>
-          <b-form-group label="อุปกรณืที่ต้องใช้" align="left" v-slot="{ ariaDescribedby }">
-            <b-form-checkbox-group
-                v-model="selected"
-                :options="options"
-                :aria-describedby="ariaDescribedby"
-                name="flavour-2a"
-                stacked>
-            </b-form-checkbox-group>
-          </b-form-group>
       </b-col>
     </b-row>
-    <vue-cal :locale="th" style="height: 500px"/>
+    <vue-cal
+      :locale="th"
+      active-view="week"
+      :events="events"
+      @ready="ready($event)"
+      @view-change="viewChange($event)"
+    />
     <b-button @click="addEvent()">Add</b-button>
   </b-container>
 </template>
@@ -114,7 +125,21 @@ export default {
       roomb: [],
       buildingb: [],
       check: false,
-      checkb: false
+      checkb: false,
+      startDate: '',
+      endDate: '',
+      startTime: '',
+      endTime: '',
+      reason: '',
+      transactionDate: '',
+      events: [
+        {
+          start: '2022-03-21 20:40',
+          end: '2022-03-21 21:40',
+          reason: 'ทำตามวิดีโอ',
+          class: 'a'
+        }
+      ]
     }
   },
   computed: {
@@ -140,16 +165,18 @@ export default {
       console.log(itemb)
       const self = this
       if (self.checkb === false) {
-        axios.get('http://localhost:3000/building/room/' + itemb).then((response) => {
-          console.log(response)
-          self.buildingb = response.data
-        })
+        axios
+          .get('http://localhost:3000/building/room/' + itemb)
+          .then((response) => {
+            console.log(response)
+            self.buildingb = response.data
+          })
         self.checkb = true
       }
     },
     addEvent () {
       const event = {
-        transactionDate: new Date(this.transactionDate),
+        transactionDate: new Date(),
         start: new Date(this.startDate + ' ' + this.startTime),
         end: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
@@ -161,6 +188,7 @@ export default {
         approveres: this.approveres,
         class: 'vdo_time'
       }
+      console.log(this.reason)
       console.log(event)
       this.events.push(event)
     },
