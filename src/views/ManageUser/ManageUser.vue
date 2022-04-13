@@ -57,7 +57,7 @@
 </template>
 <script>
 
-import axios from 'axios'
+import api from '../../services/api.js'
 import ManageUserForm from './ManageUserForm.vue'
 export default {
   components: {
@@ -72,7 +72,7 @@ export default {
     },
     deleteUser (item) {
       if (confirm(`คุณต้องการลบ ${item.name} หรือไม่?`)) {
-        axios
+        api
           .delete('http://localhost:3000/users/' + item._id)
           .then(
             function (response) {
@@ -92,7 +92,7 @@ export default {
       console.log('Submit', item)
       if (item._id === '') {
         // Add New
-        axios
+        api
           .post('http://localhost:3000/users', item)
           .then(
             function (response) {
@@ -112,7 +112,7 @@ export default {
           })
       } else {
         // Updata
-        axios
+        api
           .put('http://localhost:3000/users/' + item._id, item)
           .then(
             function (response) {
@@ -133,7 +133,7 @@ export default {
       }
     },
     getIsInstitution (item) {
-      axios.get('http://localhost:3000/institutions/' + item).then((response) => {
+      api.get('http://localhost:3000/institutions/' + item).then((response) => {
         this.institutionSelect = response.data
         console.log('Name' + this.institutionSelect.name)
         return this.institutionSelect.name
@@ -141,7 +141,7 @@ export default {
     },
     getUsers () {
       const self = this
-      axios.get('http://localhost:3000/users').then(
+      api.get('http://localhost:3000/users').then(
         function (response) {
           console.log(response)
           self.users = response.data

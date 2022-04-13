@@ -1,5 +1,8 @@
 <template>
   <b-container class="bv-example-row bv-example-row-flex-cols">
+    {{ isRoom(roomid) }}
+    {{ roomb }}
+    {{getBuildingb(roomb.building)}}
     <b-row align-v="start">
       <b-col>
         <header class="bd-content" align="left">
@@ -7,7 +10,7 @@
             <span class="bd-content-title">ตึก</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
-            IF อาคารวิทยาการสารสนเทศ
+            {{ buildingb }}
           </p>
         </header>
         <b-form-group align="left" label="วัตถุประสงค์">
@@ -74,7 +77,7 @@
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
             <span class="bd-content-title">ห้อง</span>
           </h1>
-          <p class="bd-lead; border border-dark; rounded">IF-3C01</p>
+          <p class="bd-lead; border border-dark; rounded">{{ roomb.code }} - {{ roomb.name }}</p>
         </header>
         <b-form-group label="จำนวนผู้เข้าร่วม" label-cols="3" align="left">
           <b-form-input class="w-25 p-3"></b-form-input>คน
@@ -99,16 +102,22 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
 import { getEvents } from '../services/event'
+import axios from 'axios'
 export default {
+  props: ['roomid'],
   data () {
     return {
-      selected: [], // Must be an array reference!
+      selected: [],
       options: [
         { text: 'ระบบเครื่องเสียง', value: 'orange' },
         { text: 'โปรเจคเตอร์', value: 'apple' },
         { text: 'โน๊ตบุ๊ค', value: 'pineapple' },
         { text: 'ไมค์', value: 'grape' }
-      ]
+      ],
+      roomb: [],
+      buildingb: [],
+      check: false,
+      checkb: false
     }
   },
   computed: {
@@ -120,6 +129,26 @@ export default {
     VueCal
   },
   methods: {
+    isRoom (itemid) {
+      const self = this
+      if (self.check === false) {
+        axios.get('http://localhost:3000/room/' + itemid).then((response) => {
+          console.log(response)
+          self.roomb = response.data
+        })
+        self.check = true
+      }
+    },
+    getBuildingb (itemb) {
+      const self = this
+      if (self.checkb === false && itemb !== null) {
+        axios.get('http://localhost:3000/building/' + itemb).then((response) => {
+          console.log(response)
+          self.buildingb = response.data
+        })
+        self.checkb = true
+      }
+    },
     addEvent () {
       const event = {
         transactionDate: new Date(this.transactionDate),
