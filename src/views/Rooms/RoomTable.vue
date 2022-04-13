@@ -58,15 +58,15 @@ export default {
       api.put('http://localhost:3000/room/' + room._id, room).then(
         (response) => {
           const updateRoom = response.data
-          console.log(updateRoom)
           this.getRooms()
-          this.makeToast('แก้ไขสำเร็จ', 'ห้อง ' + updateRoom._id + ' แก้ไขแล้ว')
+          this.makeToast('แก้ไขสำเร็จ', 'ห้อง ' + updateRoom.code + '-' + updateRoom.name + ' แก้ไขแล้ว')
         }
       ).catch(() => {
-        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + room._id, 'danger')
+        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + room.code + '-' + room.name, 'danger')
       })
     },
     editRoom (item) {
+      this.getAllApprover(item.approveres[0].institution)
       this.selectedItem = JSON.parse(JSON.stringify(item))
       this.$nextTick(() => {
         this.$refs.roomForm.show()
@@ -74,10 +74,8 @@ export default {
     },
     getRooms () {
       api.get('http://localhost:3000/room').then((response) => {
-        console.log(response)
         this.numRoom = response.data
       })
-      console.log(this.fields)
     },
     getApprover2 (item) {
       console.log(item)
@@ -91,9 +89,9 @@ export default {
       console.log(approv)
       return approv
     },
-    getAllApprover () {
+    getAllApprover (idInstitution) {
       const self = this
-      api.get('http://localhost:3000/users/approveres').then((response) => {
+      api.get('http://localhost:3000/users/approveres/' + idInstitution).then((response) => {
         self.allApprov = response.data
       })
     }
@@ -118,7 +116,6 @@ export default {
   },
   mounted () {
     this.getRooms()
-    this.getAllApprover()
   },
   computed: {
   }
