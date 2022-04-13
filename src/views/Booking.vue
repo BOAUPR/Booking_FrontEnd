@@ -1,8 +1,5 @@
 <template>
   <b-container class="bv-example-row bv-example-row-flex-cols">
-    {{ isRoom(roomid) }}
-    {{ roomb }}
-    {{getBuildingb(roomb.building)}}
     <b-row align-v="start">
       <b-col>
         <header class="bd-content" align="left">
@@ -10,47 +7,47 @@
             <span class="bd-content-title">ตึก</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
-            {{ buildingb }}
+            {{ roomb.building.name }}
           </p>
         </header>
         <b-form-group align="left" label="วัตถุประสงค์">
           <b-form-radio
-            v-model="selected"
+            v-model="reason"
             :aria-describedby="ariaDescribedby"
             name="some-radios"
             value="A"
             >ประชุม</b-form-radio
           >
           <b-form-radio
-            v-model="selected"
+            v-model="reason"
             :aria-describedby="ariaDescribedby"
             name="some-radios"
             value="B"
             >ฝึกอบรม</b-form-radio
           >
           <b-form-radio
-            v-model="selected"
+            v-model="reason"
             :aria-describedby="ariaDescribedby"
             name="some-radios"
             value="A"
             >สัมมนา</b-form-radio
           >
           <b-form-radio
-            v-model="selected"
+            v-model="reason"
             :aria-describedby="ariaDescribedby"
             name="some-radios"
             value="B"
             >จัดการเรียนการสอน</b-form-radio
           >
           <b-form-radio
-            v-model="selected"
+            v-model="reason"
             :aria-describedby="ariaDescribedby"
             name="some-radios"
             value="B"
             >อื่น</b-form-radio
           >
-          <b-form-group v-model="reason" label="เรื่อง" label-cols="1">
-            <b-form-input type="text" placeholder=""></b-form-input>
+          <b-form-group label="เรื่อง" label-cols="1">
+            <b-form-input v-model="reason" type="text" placeholder=""></b-form-input>
           </b-form-group>
           <label for="start-date">วันเริ่มต้น</label>
           <b-form-datepicker
@@ -140,9 +137,10 @@ export default {
       }
     },
     getBuildingb (itemb) {
+      console.log(itemb)
       const self = this
-      if (self.checkb === false && itemb !== null) {
-        axios.get('http://localhost:3000/building/' + itemb).then((response) => {
+      if (self.checkb === false) {
+        axios.get('http://localhost:3000/building/room/' + itemb).then((response) => {
           console.log(response)
           self.buildingb = response.data
         })
@@ -204,6 +202,9 @@ export default {
       })
       this.events = newEvents
     }
+  },
+  mounted () {
+    this.isRoom(this.roomid)
   }
 }
 </script>
