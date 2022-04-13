@@ -67,7 +67,7 @@ export default {
     editUser (item) {
       this.selectedItem = JSON.parse(JSON.stringify(item))
       this.$nextTick(() => {
-        this.$refs.userForm.show()
+        this.$refs.manageUserForm.show()
       })
     },
     deleteUser (item) {
