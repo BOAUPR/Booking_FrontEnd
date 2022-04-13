@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     isBooking (items) {
-      console.log(items + ' kuy')
+      console.log(items)
       const self = this
       if (self.check === false && items != null) {
         axios
@@ -54,6 +54,9 @@ export default {
           })
         self.check = true
       }
+    },
+    getBuilding () {
+
     },
     isUser () {
       const self = this

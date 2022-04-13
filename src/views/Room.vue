@@ -21,11 +21,9 @@
       </b-card>
       <b-table :items="numRoom" :fields="fields">
         <template #cell(operators)="{ item }">
-              <b-button variant="danger" @click="editRoom(item)"
-                >จองห้อง</b-button
-              >
-            </template>
-        <template> </template>
+          <!-- <b-button to="/booking" variant="danger" @click="editRoom(item)">จองห้อง</b-button> -->
+          <router-link :to="'/room/' + item._id + '/booking'" @click="editRoom(item)">จองห้อง</router-link>
+        </template>
       </b-table>
     </b-container>
   </div>
