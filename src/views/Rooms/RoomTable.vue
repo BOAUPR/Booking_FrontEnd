@@ -37,7 +37,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import api from '../../services/api.js'
 import RoomForm from './RoomForm.vue'
 export default {
   components: {
@@ -55,7 +55,7 @@ export default {
     },
     saveRoom (room) {
       console.log('Submit', room)
-      axios.put('http://localhost:3000/room/' + room._id, room).then(
+      api.put('http://localhost:3000/room/' + room._id, room).then(
         (response) => {
           const updateRoom = response.data
           console.log(updateRoom)
@@ -73,7 +73,7 @@ export default {
       })
     },
     getRooms () {
-      axios.get('http://localhost:3000/room').then((response) => {
+      api.get('http://localhost:3000/room').then((response) => {
         console.log(response)
         this.numRoom = response.data
       })
@@ -93,7 +93,7 @@ export default {
     },
     getAllApprover () {
       const self = this
-      axios.get('http://localhost:3000/users/approveres').then((response) => {
+      api.get('http://localhost:3000/users/approveres').then((response) => {
         self.allApprov = response.data
       })
     }
