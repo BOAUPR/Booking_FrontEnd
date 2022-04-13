@@ -45,7 +45,7 @@ export default {
       return state.user.roles.toString()
     },
     isUserCurrent (state, getters) {
-      return state.user
+      return state.user._id
     }
   }
 }

@@ -4,10 +4,10 @@
       <b-col>
         <header class="bd-content" align="left">
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
-            <span class="bd-content-title">ตึก</span>
+            <span class="bd-content-reason">ตึก</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
-            {{ roomb.building.name }}
+            {{ showBuilding () }}
           </p>
         </header>
         <b-form-group align="left" label="วัตถุประสงค์">
@@ -68,7 +68,7 @@
       <b-col>
         <header class="bd-content" align="left">
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
-            <span class="bd-content-title">ห้อง</span>
+            <span class="bd-content-reason">ห้อง</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
             {{ roomb.code }} - {{ roomb.name }}
@@ -131,7 +131,9 @@ export default {
       startTime: '',
       endTime: '',
       reason: '',
+      user: [],
       transactionDate: '',
+      room: [],
       events: [
         {
           start: '2022-03-21 20:40',
@@ -145,51 +147,41 @@ export default {
   computed: {
     th () {
       return th
+    },
+    isUserCurrent () {
+      return this.$store.getters['auth/isUserCurrent']
     }
   },
   components: {
     VueCal
   },
   methods: {
+    showBuilding () {
+      return this.buildingb.name
+    },
     isRoom (itemid) {
       const self = this
       if (self.check === false) {
         axios.get('http://localhost:3000/room/' + itemid).then((response) => {
           console.log(response)
           self.roomb = response.data
+          self.buildingb = self.roomb.building
         })
         self.check = true
       }
     },
-    getBuildingb (itemb) {
-      console.log(itemb)
-      const self = this
-      if (self.checkb === false) {
-        axios
-          .get('http://localhost:3000/building/room/' + itemb)
-          .then((response) => {
-            console.log(response)
-            self.buildingb = response.data
-          })
-        self.checkb = true
-      }
-    },
     addEvent () {
       const event = {
-        transactionDate: new Date(),
+        transactionDate: new Date().toLocaleDateString(),
         start: new Date(this.startDate + ' ' + this.startTime),
         end: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
-        tool: this.tool,
-        status: this.status,
-        order: this.order,
-        room: this.room,
-        user: this.user,
-        approveres: this.approveres,
+        room: this.roomb._id,
+        user: this.$store.getters['auth/isUserCurrent'],
         class: 'vdo_time'
       }
-      console.log(this.reason)
       console.log(event)
+      console.log(this.$store.getters['auth/isUserCurrent'])
       this.events.push(event)
     },
     async ready (e) {
@@ -199,13 +191,8 @@ export default {
         return {
           start: new Date(event.startDate),
           end: new Date(event.endDate),
-          reason: this.reason,
-          tool: this.tool,
-          status: this.status,
-          order: this.order,
-          room: this.room,
-          user: this.user,
-          approveres: this.approveres,
+          reason: event.reason,
+          tool: event.tool,
           class: event.class
         }
       })
@@ -216,15 +203,11 @@ export default {
       const res = await getEvents(e.startDate, e.endDate)
       const newEvents = res.data.map(function (event) {
         return {
+          transactionDate: new Date().toLocaleDateString(),
           start: new Date(event.startDate),
           end: new Date(event.endDate),
-          reason: this.reason,
-          tool: this.tool,
-          status: this.status,
-          order: this.order,
-          room: this.room,
-          user: this.user,
-          approveres: this.approveres,
+          reason: event.reason,
+          tool: event.tool,
           class: event.class
         }
       })
