@@ -77,13 +77,13 @@ export default {
           .then(
             function (response) {
               this.getUsers()
-              this.makeToast('ลบสำเร็จ', 'สินค้า ' + item._id + ' ถูกลบแล้ว')
+              this.makeToast('ลบสำเร็จ', 'สินค้า ' + item.name + ' ถูกลบแล้ว')
             }.bind(this)
           )
           .catch(() => {
             this.makeToast(
               'ลบไม่สำเร็จ',
-              'ไม่สามารถลบ ' + item._id + 'danger'
+              'ไม่สามารถลบ ' + item.name + 'danger'
             )
           })
       }
@@ -100,14 +100,14 @@ export default {
               this.getUsers()
               this.makeToast(
                 'เพิ่มสำเร็จ',
-                'ผู้ใช้งาน ' + newUser._id + ' ถูกเพิ่มแล้ว'
+                'ผู้ใช้งาน ' + newUser.name + ' ถูกเพิ่มแล้ว'
               )
             }.bind(this)
           )
           .catch(() => {
             this.makeToast(
               'เพิ่มไม่สำเร็จ',
-              'ไม่สามารถเพิ่ม ' + item._id + 'danger'
+              'ไม่สามารถเพิ่ม ' + item.name + 'danger'
             )
           })
       } else {
@@ -120,17 +120,26 @@ export default {
               this.getUsers()
               this.makeToast(
                 'ปรับปรุงสำเร็จ',
-                'ผู้ใช้งาน ' + updateUser._id + ' ถูกแก้ไขแล้ว'
+                'ผู้ใช้งาน ' + updateUser.name + ' ถูกแก้ไขแล้ว'
               )
             }.bind(this)
           )
           .catch(() => {
             this.makeToast(
               'ปรับปรุงไม่สำเร็จ',
-              'ไม่สามารถปรับปรุง ' + item._id + 'danger'
+              'ไม่สามารถปรับปรุง ' + item.name + 'danger'
             )
           })
       }
+    },
+    makeToast (title, massage, variant = 'sucess', append = false) {
+      this.toastCount++
+      this.$bvToast.toast(massage, {
+        title: title,
+        variant: variant,
+        autoHideDelay: 3000,
+        appendToast: append
+      })
     },
     getIsInstitution (item) {
       api.get('http://localhost:3000/institutions/' + item).then((response) => {
