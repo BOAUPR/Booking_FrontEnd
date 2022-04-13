@@ -71,7 +71,11 @@
           <b-col col lg="2">คน</b-col>
         </b-row>
         <b-form-group label="อุปกรณืที่ต้องใช้" align="left">
-          <b-form-input class="w-5 p-3" type="text"></b-form-input>
+          <b-form-input
+            v-model="tool"
+            class="w-5 p-3"
+            type="text"
+          ></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -102,8 +106,8 @@ export default {
         { text: 'โน๊ตบุ๊ค', value: 'pineapple' },
         { text: 'ไมค์', value: 'grape' }
       ],
-      roomb: [],
-      buildingb: [],
+      roomb: {},
+      buildingb: {},
       check: false,
       checkb: false,
       startDate: '',
@@ -111,10 +115,10 @@ export default {
       startTime: '',
       endTime: '',
       reason: '',
-      user: [],
+      user: {},
       transactionDate: '',
-      approveres: '',
-      room: [],
+      room: {},
+      tool: '',
       events: [
         {
           start: '2022-03-21 20:40',
@@ -154,15 +158,15 @@ export default {
     async addEvent () {
       const event = {
         transactionDate: new Date().toLocaleDateString(),
-        start: new Date(this.startDate + ' ' + this.startTime),
-        end: new Date(this.endDate + ' ' + this.endTime),
+        startDate: new Date(this.startDate + ' ' + this.startTime),
+        endDate: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
+        tool: this.tool,
         room: this.roomb._id,
         user: this.$store.getters['auth/isUserId'],
         approveres: this.roomb.approveres
       }
       await addEvent(event)
-      console.log(event)
       console.log(this.$store.getters['auth/isUserId'])
       this.events.push(event)
     },
