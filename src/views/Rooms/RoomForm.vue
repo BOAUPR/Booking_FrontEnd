@@ -85,10 +85,27 @@
         label="ผู้พิจารณา"
         label-for="room-approveres"
        >
+        <b-form-select v-model="form.approveres[0]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[0]"> {{ form.approveres[0].name }}  {{ form.approveres[0].surname }}</b-form-select-option>
+          </template>
+        </b-form-select>
 
-        <tr v-for="approv in approvs" :key="approv._id">
-           <Checkbox v-model="selectApprov" :value="approv._id"> : {{ approv.name }} {{ approv.surname }} </Checkbox>
-        </tr>
+        <b-form-select v-model="form.approveres[1]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[1]"> {{ form.approveres[1].name }}  {{ form.approveres[1].surname }}</b-form-select-option>
+          </template>
+        </b-form-select>
+
+        <b-form-select v-model="form.approveres[2]" :options="allApprov">
+          <template #first>
+            <b-form-select-option :value="form.approveres[2]"> {{ form.approveres[2].name }}  {{ form.approveres[2].surname }} </b-form-select-option>
+          </template>
+        </b-form-select>
+
+        <!-- <tr v-for="approv in approvs" :key="approv._id">
+           {{ approv.name }} {{ approv.surname }} : <input type="checkbox" :value="approv._id" v-model="form.approveres" @change="check">
+        </tr> -->
 
        </b-form-group>
 
@@ -104,11 +121,7 @@
 </template>
 <script>
 // import axios from 'axios'
-import Checkbox from 'vue-material-checkbox'
 export default {
-  components: {
-    Checkbox
-  },
   props: {
     room: Object,
     approvs: Array
@@ -128,7 +141,9 @@ export default {
       allApprov2: [],
       isAddNew: false,
       allApprov: [],
-      selectApprov: []
+      selectApprov1: { value: {}, text: 'sumo' },
+      selectApprov2: null,
+      selectApprov3: null
     }
   },
   computed: {
@@ -147,17 +162,14 @@ export default {
     validateEquip () {
       return true
     },
-    validateApprov () {
-      return this.form.approveres.length >= 1
-    },
     validateForm () {
-      return this.validateName && this.validateFloor && this.validateCode && this.validateCap && this.validateEquip && this.validateApprov
+      return this.validateName && this.validateFloor && this.validateCode && this.validateCap && this.validateEquip
     }
   },
   methods: {
     checkNullApprov (item) {
       if (item == null) {
-        return true
+        return false
       } else { return true }
     },
     check (e) {
@@ -168,6 +180,21 @@ export default {
       })
     },
 
+    // getAllApprov () {
+    //   const self = this
+    //   axios.get('http://localhost:3000/users/approveres').then((response) => {
+    //     self.allApprov2 = response.data
+    //   })
+    //   console.log('----------')
+    //   console.log(this.allApprov2)
+    //   for (let index = 0; index < this.allApprov2.length; index++) {
+    //     this.allApprov[index].value = this.allApprov2[index]
+    //     this.allApprov[index].text = this.allApprov2[index].name
+    //   }
+
+    //   console.log(this.allApprov)
+    //   console.log(this.allApprov2[0].surname)
+    // },
     getValueApprover () {
       console.log(this.allApprov2)
       for (const i of this.allApprov2) {
@@ -194,7 +221,6 @@ export default {
         approveres: [{}]
       }
       this.allApprov = []
-      this.selectApprov = []
     },
     showModal (evt) {
       if (this.isAddNew) {
@@ -207,7 +233,7 @@ export default {
         this.form.capacity = this.room.capacity
         this.form.building = this.room.building
         this.form.equipment = this.room.equipment
-        this.form.approveres = this.selectApprov
+        this.form.approveres = this.room.approveres
         this.allApprov2 = this.approvs
         this.getValueApprover()
       }
@@ -238,7 +264,6 @@ export default {
         approveres: [{}]
       }
       this.allApprov = []
-      this.selectApprov = []
     }
   },
   mounted () {
