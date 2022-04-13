@@ -18,12 +18,8 @@
     "popper.js": "^1.16.1",
     "portal-vue": "^2.1.7",
     "vue": "^2.6.14",
-<<<<<<< HEAD
-    "vue-cal": "^3.10.1",
-=======
     "vue-cal": "^3.10.3",
     "vue-material-checkbox": "^2.2.0",
->>>>>>> e73b52196c09ad0853ef03c450f7087ed355c5c0
     "vue-router": "^3.2.0",
     "vuex": "^3.4.0"
   },
