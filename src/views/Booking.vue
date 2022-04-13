@@ -7,35 +7,18 @@
             <span class="bd-content-reason">ตึก</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
-            {{ showBuilding () }}
+            {{ showBuilding() }}
           </p>
         </header>
         <b-form-group align="left" label="วัตถุประสงค์">
-          <b-form-radio
-            v-model="reason"
-            value="ประชุม"
-            >ประชุม</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="ฝึกอบรม"
-            >ฝึกอบรม</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="สัมมนา"
-            >สัมมนา</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="จัดการเรียนการสอน"
+          <b-form-radio v-model="reason" value="ประชุม">ประชุม</b-form-radio>
+          <b-form-radio v-model="reason" value="ฝึกอบรม">ฝึกอบรม</b-form-radio>
+          <b-form-radio v-model="reason" value="สัมมนา">สัมมนา</b-form-radio>
+          <b-form-radio v-model="reason" value="จัดการเรียนการสอน"
             >จัดการเรียนการสอน</b-form-radio
           >
           <b-form-group label="เรื่อง" label-cols="1">
-            <b-form-input
-              v-model="reason"
-              type="text"
-            ></b-form-input>
+            <b-form-input v-model="reason" type="text"></b-form-input>
           </b-form-group>
           <label for="start-date">วันเริ่มต้น</label>
           <b-form-datepicker
@@ -87,11 +70,8 @@
           ></b-col>
           <b-col col lg="2">คน</b-col>
         </b-row>
-        <b-form-group
-          label="อุปกรณืที่ต้องใช้"
-          align="left"
-        >
-        <b-form-input class="w-5 p-3" type="text"></b-form-input>
+        <b-form-group label="อุปกรณืที่ต้องใช้" align="left">
+          <b-form-input class="w-5 p-3" type="text"></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -109,7 +89,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
-import { getEvents } from '../services/event'
+import { getEvents, addEvent } from '../services/event'
 import axios from 'axios'
 export default {
   props: ['roomid'],
@@ -133,6 +113,7 @@ export default {
       reason: '',
       user: [],
       transactionDate: '',
+      approveres: '',
       room: [],
       events: [
         {
@@ -148,8 +129,8 @@ export default {
     th () {
       return th
     },
-    isUserCurrent () {
-      return this.$store.getters['auth/isUserCurrent']
+    isUserId () {
+      return this.$store.getters['auth/isUserId']
     }
   },
   components: {
@@ -170,18 +151,19 @@ export default {
         self.check = true
       }
     },
-    addEvent () {
+    async addEvent () {
       const event = {
         transactionDate: new Date().toLocaleDateString(),
         start: new Date(this.startDate + ' ' + this.startTime),
         end: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
         room: this.roomb._id,
-        user: this.$store.getters['auth/isUserCurrent'],
-        class: 'vdo_time'
+        user: this.$store.getters['auth/isUserId'],
+        approveres: this.roomb.approveres
       }
+      await addEvent(event)
       console.log(event)
-      console.log(this.$store.getters['auth/isUserCurrent'])
+      console.log(this.$store.getters['auth/isUserId'])
       this.events.push(event)
     },
     async ready (e) {
@@ -234,6 +216,11 @@ export default {
   color: #fff;
 }
 .vuecal__event.c {
+  background-color: rgba(255, 102, 102, 0.9);
+  border: 1px solid rgb(235, 82, 82);
+  color: #fff;
+}
+.vuecal__event.vdo_time {
   background-color: rgba(255, 102, 102, 0.9);
   border: 1px solid rgb(235, 82, 82);
   color: #fff;
