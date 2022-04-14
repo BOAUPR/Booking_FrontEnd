@@ -148,6 +148,7 @@ export default {
       }
     },
     async addEvent () {
+      this.$router.push('Status')
       const event = {
         transactionDate: new Date().toLocaleDateString(),
         startDate: new Date(this.startDate + ' ' + this.startTime),
