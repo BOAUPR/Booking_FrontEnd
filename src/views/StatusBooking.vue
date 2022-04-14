@@ -59,6 +59,7 @@ export default {
     deleteBooking (item) {
       console.log(item)
       deleteBooking(item)
+      window.location.reload()
     },
     isUser () {
       const self = this
