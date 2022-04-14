@@ -7,3 +7,7 @@ export function getEvents (startDate, endDate) {
 export function addEvent (event) {
   return api.post('/booking', event)
 }
+
+export function deleteBooking (event) {
+  return api.delete('/booking/' + event)
+}

@@ -9,7 +9,7 @@
     </header>
     <b-table :items="booking" :fields="fields">
       <template #cell(operators)="{ item }">
-        <b-button variant="danger" @click="editRoom(item)">ยกเลิก</b-button>
+        <b-button variant="danger" @click="deleteBooking(item._id)">ยกเลิก</b-button>
       </template>
       <template #cell(room)="{ item }">
         {{ item.room.code }} - {{ item.room.name }}
@@ -23,6 +23,7 @@
 
 <script>
 import axios from 'axios'
+import { deleteBooking } from '../services/event'
 export default {
   data () {
     return {
@@ -55,8 +56,9 @@ export default {
         self.check = true
       }
     },
-    getBuilding () {
-
+    deleteBooking (item) {
+      console.log(item)
+      deleteBooking(item)
     },
     isUser () {
       const self = this
