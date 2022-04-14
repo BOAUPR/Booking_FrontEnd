@@ -42,7 +42,7 @@ export default {
       return state.user != null
     },
     isRole (state, getters) {
-      return state.user.roles.toString()
+      return state.user.roles
     },
     isUserCurrent (state, getters) {
       return state.user
