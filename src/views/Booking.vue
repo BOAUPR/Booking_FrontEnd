@@ -167,19 +167,23 @@ export default {
       if (!this.validateForm) return
       console.log(event)
 
-      console.log(this.approveresu.length + 'Kuyyyyyyyyyyyyyyy')
+      const add = await addEvent(event)
+      console.log(JSON.stringify(add))
+      const idBooking = JSON.parse(JSON.stringify(add.data._id))
+      console.log(idBooking)
+
+      api.get('http://localhost:3000/booking/' + idBooking).then((response) => {
+        console.log(response.data)
+      })
 
       for (let i = 0; i < this.approveresu.length; i++) {
-        console.log(this.approveresu[i]._id + 'KUYYYYYYYYYYYYYYYYYYYYYYYY')
+        console.log(this.approveresu[i]._id)
         const appPro = {
           user: this.approveresu[i]._id,
-          booking: ''
+          booking: idBooking
         }
         addApprover(appPro)
       }
-
-      await addEvent(event)
-
       // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()

@@ -4,7 +4,8 @@ import { login } from '../../services/auth'
 export default {
   namespaced: true,
   state: () => ({
-    user: JSON.parse(localStorage.getItem('user'))
+    user: JSON.parse(localStorage.getItem('user')),
+    user1: JSON.parse(localStorage.getItem('idBooking'))
   }),
   mutations: {
     [AUTH_LOGIN] (state, payload) {
