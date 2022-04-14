@@ -80,7 +80,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
-import { getEvents, addEvent } from '../services/event'
+import { getEvents, addEvent, addApprover } from '../services/event'
 import api from '../services/api.js'
 export default {
   props: ['roomid'],
@@ -148,7 +148,7 @@ export default {
           console.log(response)
           self.roomb = response.data
           self.buildingb = self.roomb.building
-          self.approveres = self.roomb.approveresu
+          self.approveresu = self.roomb.approveres
         })
         self.check = true
       }
@@ -166,18 +166,24 @@ export default {
       }
       if (!this.validateForm) return
       console.log(event)
-      await addEvent(event)
+
+      const add = await addEvent(event)
+      console.log(JSON.stringify(add))
+      const idBooking = JSON.parse(JSON.stringify(add.data._id))
+      console.log(idBooking)
+
+      api.get('http://localhost:3000/booking/' + idBooking).then((response) => {
+        console.log(response.data)
+      })
 
       for (let i = 0; i < this.approveresu.length; i++) {
+        console.log(this.approveresu[i]._id)
         const appPro = {
-          user: this.approveresu[i],
-          booking: ''
+          user: this.approveresu[i]._id,
+          booking: idBooking
         }
-        api.post('http://localhost:3000/approver/' + appPro).then((response) => {
-          console.log(response)
-        })
+        addApprover(appPro)
       }
-
       // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()
