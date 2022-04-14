@@ -81,7 +81,7 @@ import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
 import { getEvents, addEvent } from '../services/event'
-import axios from 'axios'
+import api from '../services/api.js'
 export default {
   props: ['roomid'],
   data () {
@@ -107,7 +107,8 @@ export default {
       room: {},
       tool: '',
       events: [],
-      approveresu: []
+      approveresu: [],
+      approveresK: []
     }
   },
   computed: {
@@ -143,7 +144,7 @@ export default {
     isRoom (itemid) {
       const self = this
       if (self.check === false) {
-        axios.get('http://localhost:3000/room/' + itemid).then((response) => {
+        api.get('http://localhost:3000/room/' + itemid).then((response) => {
           console.log(response)
           self.roomb = response.data
           self.buildingb = self.roomb.building
@@ -167,15 +168,16 @@ export default {
       console.log(event)
       await addEvent(event)
 
-      const appPro = {
-        user: this.$store.getters['auth/isUserCurrent'],
-        booking: ''
-      }
       for (let i = 0; i < this.approveresu.length; i++) {
-        axios.post('http://localhost:3000/approver/' + appPro).then((response) => {
+        const appPro = {
+          user: this.approveresu[i],
+          booking: ''
+        }
+        api.post('http://localhost:3000/approver/' + appPro).then((response) => {
           console.log(response)
         })
       }
+
       // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()
