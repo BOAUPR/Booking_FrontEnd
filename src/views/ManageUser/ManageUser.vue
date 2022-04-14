@@ -21,7 +21,7 @@
       <b-row>
         <b-col class="text-right">
           <ManageUserForm
-            :user="selectedItem"
+            :user="selectedItem" :institutions="allInstitution"
             ref="manageUserForm"
             @save="saveUser"
           ></ManageUserForm>
@@ -65,6 +65,7 @@ export default {
   },
   methods: {
     editUser (item) {
+      this.allRoles = item.roles
       this.selectedItem = JSON.parse(JSON.stringify(item))
       this.$nextTick(() => {
         this.$refs.manageUserForm.show()
@@ -92,43 +93,27 @@ export default {
       console.log('Submit', item)
       if (item._id === '') {
         // Add New
-        api
-          .post('http://localhost:3000/users', item)
-          .then(
-            function (response) {
-              const newUser = response.data
-              this.getUsers()
-              this.makeToast(
-                'เพิ่มสำเร็จ',
-                'ผู้ใช้งาน ' + newUser.name + ' ถูกเพิ่มแล้ว'
-              )
-            }.bind(this)
-          )
+        api.post('http://localhost:3000/users/', item).then(
+          function (response) {
+            const newUser = response.data
+            this.getUsers()
+            this.makeToast('เพิ่มสำเร็จ', 'ผู้ใช้งาน ' + newUser.name + ' ถูกเพิ่มแล้ว')
+          }.bind(this)
+        )
           .catch(() => {
-            this.makeToast(
-              'เพิ่มไม่สำเร็จ',
-              'ไม่สามารถเพิ่ม ' + item.name + 'danger'
-            )
+            this.makeToast('เพิ่มไม่สำเร็จ', 'ไม่สามารถเพิ่มผู้ใช้งาน ' + item.name)
           })
       } else {
         // Updata
-        api
-          .put('http://localhost:3000/users/' + item._id, item)
-          .then(
-            function (response) {
-              const updateUser = response.data
-              this.getUsers()
-              this.makeToast(
-                'ปรับปรุงสำเร็จ',
-                'ผู้ใช้งาน ' + updateUser.name + ' ถูกแก้ไขแล้ว'
-              )
-            }.bind(this)
-          )
+        api.put('http://localhost:3000/users/' + item._id, item).then(
+          function (response) {
+            const updateUser = response.data
+            this.getUsers()
+            this.makeToast('ปรับปรุงสำเร็จ', 'ผู้ใช้งาน ' + updateUser.name + ' ถูกแก้ไขแล้ว')
+          }.bind(this)
+        )
           .catch(() => {
-            this.makeToast(
-              'ปรับปรุงไม่สำเร็จ',
-              'ไม่สามารถปรับปรุง ' + item.name + 'danger'
-            )
+            this.makeToast('แก้ไขไม่สำเร็จ', 'ไม่สามารถแก้ไขผู้ใช้งาน ' + item.name)
           })
       }
     },
@@ -141,12 +126,15 @@ export default {
         appendToast: append
       })
     },
-    getIsInstitution (item) {
-      api.get('http://localhost:3000/institutions/' + item).then((response) => {
-        this.institutionSelect = response.data
-        console.log('Name' + this.institutionSelect.name)
-        return this.institutionSelect.name
+    getInstitution () {
+      const self = this
+      api.get('http://localhost:3000/institution/').then((response) => {
+        console.log('--------------------')
+        console.log(response.data)
+        self.allInstitution = response.data
       })
+      console.log('--------------------')
+      console.log(this.allInstitution)
     },
     getUsers () {
       const self = this
@@ -158,6 +146,7 @@ export default {
       )
       console.log(this.fields)
     },
+
     getRolse (item) {
       var roles = []
       for (let index = 0; index < item.length; index++) {
@@ -169,6 +158,13 @@ export default {
       console.log(roles)
       return roles
     },
+    // getAllRoles (item) {
+    //   const self = this
+    //   for (let index = 0; index < item.roles.length; index++) {
+    //     self.allRoles += item[index].roles
+    //   }
+    // },
+
     getName (itemName, itemSurname) {
       var name = ''
       name += itemName + ' ' + itemSurname
@@ -190,11 +186,14 @@ export default {
       users: [],
       selectedItem: null,
       institutionSelect: {},
-      isInstitution: false
+      isInstitution: false,
+      allRoles: [],
+      allInstitution: []
     }
   },
   mounted () {
     this.getUsers()
+    this.getInstitution()
   }
 }
 </script>

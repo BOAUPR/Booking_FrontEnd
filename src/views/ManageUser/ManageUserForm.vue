@@ -47,14 +47,9 @@
           label-for="user-roles"
 
         >
-          <b-form-input
-            type="text"
-            id="user-roles"
-            placeholder="สถานะ"
-            v-model="form.rolse"
-
-          >
-          </b-form-input>
+          <tr v-for="roles in allRoles" :key="roles">
+           <Checkbox v-model="selectRoles" :value="roles"> : {{ roles }} </Checkbox>
+        </tr>
         </b-form-group>
 
         <b-form-group
@@ -62,13 +57,12 @@
           label="หน่วยงาน"
           label-for="user-institution"
         >
-          <b-form-input
-            type="text"
-            id="user-institution"
-            placeholder="หน่วยงาน"
-            v-model="form.institution"
-          >
-          </b-form-input>
+          <b-form-select v-model="form.institution" :options="allInstitution" class="mb-3">
+          <template #first>
+        <b-form-select-option :value="null" disabled>-- Please select an option --</b-form-select-option>
+          </template>
+        </b-form-select>
+
         </b-form-group>
 
       </b-form>
@@ -82,12 +76,15 @@
   </div>
 </template>
 <script>
+import Checkbox from 'vue-material-checkbox'
 export default {
+  components: {
+    Checkbox
+  },
   props: {
-    user: {
-      user: Object,
-      roles: Array
-    }
+    user: Object,
+    roless: Array,
+    institutions: Array
   },
   data () {
     return {
@@ -98,7 +95,10 @@ export default {
         roles: [{}],
         institution: {}
       },
-      isAddNew: false
+      isAddNew: false,
+      allInstitution: [],
+      allRoles: ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER'],
+      selectRoles: []
     }
   },
   computed: {
@@ -108,11 +108,36 @@ export default {
     validateSurname () {
       return this.form.surname.length >= 1
     },
+    validateRoles () {
+      return this.form.roles.length >= 1
+    },
+    validateInstitution () {
+      return this.form.institution.length >= 1
+    },
     validateForm () {
-      return this.validateName && this.validateSurname
+      return this.validateName && this.validateSurname && this.validateRoles && this.validateInstitution
     }
   },
   methods: {
+    check (e) {
+      this.$nextTick(() => {
+        if (e.target.checked) {
+          console.log(e.target.value) // Pass this value in API
+        }
+      })
+    },
+
+    getValueInstitution () {
+      console.log(this.institutions)
+      for (const i of this.institutions) {
+        this.allInstitution.push({
+          value: i,
+          text: i.name
+        })
+      }
+      console.log('----------')
+      console.log(this.allInstitution)
+    },
     addNew () {
       this.isAddNew = true
       this.$nextTick(() => {
@@ -121,6 +146,7 @@ export default {
       })
     },
     show () {
+      this.allInstitution = []
       this.$refs.modalUser.show()
     },
     submit () {
@@ -136,6 +162,9 @@ export default {
         roles: [{}],
         institution: {}
       }
+      this.allRoles = []
+      this.allInstitution = []
+      this.selectRoles = []
     },
     showModal (evt) {
       if (this.isAddNew) {
@@ -147,6 +176,8 @@ export default {
         this.form.surname = this.user.surname
         this.form.roles = this.user.roles
         this.form.institution = this.user.institution
+        // this.allRoles2 = this.roless
+        this.getValueInstitution()
       }
     },
     resetModal (evt) {
@@ -154,7 +185,7 @@ export default {
     },
     handleOk (evt) {
       evt.preventDefault()
-      if (!this.validateForm) return
+      // if (!this.validateForm) return
       this.submit()
       this.$nextTick(() => {
         this.$bvModal.hide('modal-user')
