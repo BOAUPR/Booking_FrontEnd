@@ -9,10 +9,10 @@
     <b-nav vertical>
       <b-nav-item to="/building"> <b-button class="buttonMenu" variant="outline-secondary"> <b-icon-book></b-icon-book> <br> ตารางการใช้ห้อง </b-button></b-nav-item>
       <b-nav-item to="/status"> <b-button class="buttonMenu" variant="outline-secondary"> สถานะการจอง </b-button></b-nav-item>
-      <b-nav-item v-if="check[0] !== 'USER'"> <b-button class="buttonMenu" variant="outline-secondary"> รายการจอง </b-button></b-nav-item>
-      <b-nav-item v-if="check[0] !== 'USER'" to="/manageuser"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลผู้ใช้ </b-button></b-nav-item>
-      <b-nav-item v-if="check[0] !== 'USER'" to="/managebuilding"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลอาคาร </b-button></b-nav-item>
-      <b-nav-item v-if="check[0] !== 'USER'" to="/manageroom"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลห้อง </b-button></b-nav-item>
+      <b-nav-item to="bookinglist"> <b-button class="buttonMenu" variant="outline-secondary"> รายการจอง </b-button></b-nav-item>
+      <b-nav-item to="/manageuser"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลผู้ใช้ </b-button></b-nav-item>
+      <b-nav-item to="/managebuilding"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลอาคาร </b-button></b-nav-item>
+      <b-nav-item to="/manageroom"> <b-button class="buttonMenu" variant="outline-secondary"> จัดการข้อมูลห้อง </b-button></b-nav-item>
       <b-nav-item> <b-button class="buttonMenu" variant="outline-secondary" @click="logout()"> ออกจากระบบ </b-button></b-nav-item>
     </b-nav>
   </div>
