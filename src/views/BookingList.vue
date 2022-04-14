@@ -64,7 +64,7 @@ export default {
             const approver = self.approveres[j]
             // console.log(approver)
             if (approver.user === self.userb) {
-              console.log('im here')
+              // console.log('im here')
               if (approver.status === '0') {
                 ourBooking.push(self.waitingapprover[i])
                 break
@@ -83,7 +83,7 @@ export default {
         const approver = item.approveres[i]
         // console.log(approver)
         if (approver.user === this.userb) {
-          console.log('im here')
+          // console.log('im here')
           const updateApprover = approver
           updateApprover.status = '1'
           api.put(
