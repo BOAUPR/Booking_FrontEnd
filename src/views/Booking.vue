@@ -4,38 +4,21 @@
       <b-col>
         <header class="bd-content" align="left">
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
-            <span class="bd-content-title">ตึก</span>
+            <span class="bd-content-reason">ตึก</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
-            {{ roomb.building.name }}
+            {{ showBuilding() }}
           </p>
         </header>
         <b-form-group align="left" label="วัตถุประสงค์">
-          <b-form-radio
-            v-model="reason"
-            value="ประชุม"
-            >ประชุม</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="ฝึกอบรม"
-            >ฝึกอบรม</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="สัมมนา"
-            >สัมมนา</b-form-radio
-          >
-          <b-form-radio
-            v-model="reason"
-            value="จัดการเรียนการสอน"
+          <b-form-radio v-model="reason" value="ประชุม">ประชุม</b-form-radio>
+          <b-form-radio v-model="reason" value="ฝึกอบรม">ฝึกอบรม</b-form-radio>
+          <b-form-radio v-model="reason" value="สัมมนา">สัมมนา</b-form-radio>
+          <b-form-radio v-model="reason" value="จัดการเรียนการสอน"
             >จัดการเรียนการสอน</b-form-radio
           >
           <b-form-group label="เรื่อง" label-cols="1">
-            <b-form-input
-              v-model="reason"
-              type="text"
-            ></b-form-input>
+            <b-form-input v-model="reason" type="text"></b-form-input>
           </b-form-group>
           <label for="start-date">วันเริ่มต้น</label>
           <b-form-datepicker
@@ -68,7 +51,7 @@
       <b-col>
         <header class="bd-content" align="left">
           <h1 id="calendar" class="bv-no-focus-ring" tabindex="-1">
-            <span class="bd-content-title">ห้อง</span>
+            <span class="bd-content-reason">ห้อง</span>
           </h1>
           <p class="bd-lead; border border-dark; rounded">
             {{ roomb.code }} - {{ roomb.name }}
@@ -87,11 +70,12 @@
           ></b-col>
           <b-col col lg="2">คน</b-col>
         </b-row>
-        <b-form-group
-          label="อุปกรณืที่ต้องใช้"
-          align="left"
-        >
-        <b-form-input class="w-5 p-3" type="text"></b-form-input>
+        <b-form-group label="อุปกรณืที่ต้องใช้" align="left">
+          <b-form-input
+            v-model="tool"
+            class="w-5 p-3"
+            type="text"
+          ></b-form-input>
         </b-form-group>
       </b-col>
     </b-row>
@@ -109,7 +93,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
-import { getEvents } from '../services/event'
+import { getEvents, addEvent } from '../services/event'
 import axios from 'axios'
 export default {
   props: ['roomid'],
@@ -122,8 +106,8 @@ export default {
         { text: 'โน๊ตบุ๊ค', value: 'pineapple' },
         { text: 'ไมค์', value: 'grape' }
       ],
-      roomb: [],
-      buildingb: [],
+      roomb: {},
+      buildingb: {},
       check: false,
       checkb: false,
       startDate: '',
@@ -131,7 +115,10 @@ export default {
       startTime: '',
       endTime: '',
       reason: '',
+      user: {},
       transactionDate: '',
+      room: {},
+      tool: '',
       events: [
         {
           start: '2022-03-21 20:40',
@@ -145,51 +132,42 @@ export default {
   computed: {
     th () {
       return th
+    },
+    isUserId () {
+      return this.$store.getters['auth/isUserId']
     }
   },
   components: {
     VueCal
   },
   methods: {
+    showBuilding () {
+      return this.buildingb.name
+    },
     isRoom (itemid) {
       const self = this
       if (self.check === false) {
         axios.get('http://localhost:3000/room/' + itemid).then((response) => {
           console.log(response)
           self.roomb = response.data
+          self.buildingb = self.roomb.building
         })
         self.check = true
       }
     },
-    getBuildingb (itemb) {
-      console.log(itemb)
-      const self = this
-      if (self.checkb === false) {
-        axios
-          .get('http://localhost:3000/building/room/' + itemb)
-          .then((response) => {
-            console.log(response)
-            self.buildingb = response.data
-          })
-        self.checkb = true
-      }
-    },
-    addEvent () {
+    async addEvent () {
       const event = {
-        transactionDate: new Date(),
-        start: new Date(this.startDate + ' ' + this.startTime),
-        end: new Date(this.endDate + ' ' + this.endTime),
+        transactionDate: new Date().toLocaleDateString(),
+        startDate: new Date(this.startDate + ' ' + this.startTime),
+        endDate: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
         tool: this.tool,
-        status: this.status,
-        order: this.order,
-        room: this.room,
-        user: this.user,
-        approveres: this.approveres,
-        class: 'vdo_time'
+        room: this.roomb._id,
+        user: this.$store.getters['auth/isUserId'],
+        approveres: this.roomb.approveres
       }
-      console.log(this.reason)
-      console.log(event)
+      await addEvent(event)
+      console.log(this.$store.getters['auth/isUserId'])
       this.events.push(event)
     },
     async ready (e) {
@@ -199,13 +177,8 @@ export default {
         return {
           start: new Date(event.startDate),
           end: new Date(event.endDate),
-          reason: this.reason,
-          tool: this.tool,
-          status: this.status,
-          order: this.order,
-          room: this.room,
-          user: this.user,
-          approveres: this.approveres,
+          reason: event.reason,
+          tool: event.tool,
           class: event.class
         }
       })
@@ -216,15 +189,11 @@ export default {
       const res = await getEvents(e.startDate, e.endDate)
       const newEvents = res.data.map(function (event) {
         return {
+          transactionDate: new Date().toLocaleDateString(),
           start: new Date(event.startDate),
           end: new Date(event.endDate),
-          reason: this.reason,
-          tool: this.tool,
-          status: this.status,
-          order: this.order,
-          room: this.room,
-          user: this.user,
-          approveres: this.approveres,
+          reason: event.reason,
+          tool: event.tool,
           class: event.class
         }
       })
@@ -251,6 +220,11 @@ export default {
   color: #fff;
 }
 .vuecal__event.c {
+  background-color: rgba(255, 102, 102, 0.9);
+  border: 1px solid rgb(235, 82, 82);
+  color: #fff;
+}
+.vuecal__event.vdo_time {
   background-color: rgba(255, 102, 102, 0.9);
   border: 1px solid rgb(235, 82, 82);
   color: #fff;

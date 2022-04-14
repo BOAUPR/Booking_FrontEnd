@@ -22,7 +22,7 @@
       <b-table :items="numRoom" :fields="fields">
         <template #cell(operators)="{ item }">
           <!-- <b-button to="/booking" variant="danger" @click="editRoom(item)">จองห้อง</b-button> -->
-          <router-link :to="'/room/' + item._id + '/booking'" @click="editRoom(item)">จองห้อง</router-link>
+          <router-link :to="'/room/' + item._id + '/booking'" @click="editRoom(item)"><button class="btn btn-primary">จองห้อง</button></router-link>
         </template>
       </b-table>
     </b-container>

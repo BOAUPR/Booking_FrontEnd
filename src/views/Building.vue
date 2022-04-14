@@ -12,7 +12,7 @@
               <a href="/room" class="router-link"
                 ><button class="btn btn-primary">ดูรายละเอียด</button></a>
             </div> -->
-            <router-link :to="'/building/' + item._id + '/room'">ดูรายละเอียด</router-link>
+            <router-link :to="'/building/' + item._id + '/room'"><button class="btn btn-primary">ดูรายละเอียด</button></router-link>
           </div>
         </div>
       </div>
