@@ -106,7 +106,8 @@ export default {
       transactionDate: '',
       room: {},
       tool: '',
-      events: []
+      events: [],
+      approveresu: []
     }
   },
   computed: {
@@ -115,6 +116,9 @@ export default {
     },
     isUserId () {
       return this.$store.getters['auth/isUserId']
+    },
+    isUserCurrent () {
+      return this.$store.getters['auth/isUserCurrent']
     },
     validateReason () {
       return this.reason.length >= 1
@@ -143,6 +147,7 @@ export default {
           console.log(response)
           self.roomb = response.data
           self.buildingb = self.roomb.building
+          self.approveres = self.roomb.approveresu
         })
         self.check = true
       }
@@ -161,7 +166,17 @@ export default {
       if (!this.validateForm) return
       console.log(event)
       await addEvent(event)
-      console.log(this.$store.getters['auth/isUserId'])
+
+      const appPro = {
+        user: this.$store.getters['auth/isUserCurrent'],
+        booking: ''
+      }
+      for (let i = 0; i < this.approveresu.length; i++) {
+        axios.post('http://localhost:3000/approver/' + appPro).then((response) => {
+          console.log(response)
+        })
+      }
+      // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()
     },
