@@ -66,7 +66,7 @@
             ></b-form-group
           ></b-col>
           <b-col cols="12" md="auto"
-            ><b-form-input class="w-5 p-3" type="number" step="1"></b-form-input
+            ><b-form-input value="0" class="w-5 p-3" type="number" step="1"></b-form-input
           ></b-col>
           <b-col col lg="2">คน</b-col>
         </b-row>
@@ -128,6 +128,18 @@ export default {
     },
     isUserId () {
       return this.$store.getters['auth/isUserId']
+    },
+    validateReason () {
+      return this.reason.length >= 1
+    },
+    validateStartDate () {
+      return this.startDate && this.startTime != null
+    },
+    validateEndDate () {
+      return this.endDate && this.endDate != null
+    },
+    validateForm () {
+      return this.validateReason && this.validateStartDate && this.validateEndDate
     }
   },
   components: {
@@ -159,6 +171,7 @@ export default {
         user: this.$store.getters['auth/isUserId'],
         approveres: this.roomb.approveres
       }
+      if (!this.validateForm) return
       console.log(event)
       await addEvent(event)
       console.log(this.$store.getters['auth/isUserId'])
