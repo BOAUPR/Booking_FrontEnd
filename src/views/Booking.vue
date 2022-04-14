@@ -172,7 +172,7 @@ export default {
       const idBooking = JSON.parse(JSON.stringify(add.data._id))
       console.log(idBooking)
 
-      api.get('http://localhost:3000/booking/' + idBooking).then((response) => {
+      api.get('http://localhost:3000/booking/Idbooking/' + idBooking).then((response) => {
         console.log(response.data)
       })
 
