@@ -73,7 +73,7 @@
       @ready="ready($event)"
       @view-change="viewChange($event)"
     />
-    <b-button @click="addEvent()">Add</b-button>
+    <router-link to="/status"><b-button @click="addEvent()">Add</b-button></router-link>
   </b-container>
 </template>
 <script>
@@ -148,7 +148,6 @@ export default {
       }
     },
     async addEvent () {
-      this.$router.push('Status')
       const event = {
         transactionDate: new Date().toLocaleDateString(),
         startDate: new Date(this.startDate + ' ' + this.startTime),
@@ -163,6 +162,8 @@ export default {
       console.log(event)
       await addEvent(event)
       console.log(this.$store.getters['auth/isUserId'])
+      // this.$router.push('Status')
+      // window.location.reload()
     },
     async ready (e) {
       console.log('ready', e)
