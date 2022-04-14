@@ -11,3 +11,7 @@ export function addEvent (event) {
 export function deleteBooking (event) {
   return api.delete('/booking/' + event)
 }
+
+export function addApprover (item) {
+  return api.post('/approver', item)
+}
