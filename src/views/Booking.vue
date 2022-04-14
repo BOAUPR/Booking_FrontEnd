@@ -119,14 +119,7 @@ export default {
       transactionDate: '',
       room: {},
       tool: '',
-      events: [
-        {
-          start: '2022-03-21 20:40',
-          end: '2022-03-21 21:40',
-          reason: 'ทำตามวิดีโอ',
-          class: 'a'
-        }
-      ]
+      events: []
     }
   },
   computed: {
@@ -166,9 +159,9 @@ export default {
         user: this.$store.getters['auth/isUserId'],
         approveres: this.roomb.approveres
       }
+      console.log(event)
       await addEvent(event)
       console.log(this.$store.getters['auth/isUserId'])
-      this.events.push(event)
     },
     async ready (e) {
       console.log('ready', e)
