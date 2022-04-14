@@ -57,20 +57,7 @@
             {{ roomb.code }} - {{ roomb.name }}
           </p>
         </header>
-        <b-row>
-          <b-col col lg="3"
-            ><b-form-group
-              class="w-1"
-              label="จำนวนผู้เข้าร่วม"
-              align="left"
-            ></b-form-group
-          ></b-col>
-          <b-col cols="12" md="auto"
-            ><b-form-input value="0" class="w-5 p-3" type="number" step="1"></b-form-input
-          ></b-col>
-          <b-col col lg="2">คน</b-col>
-        </b-row>
-        <b-form-group label="อุปกรณืที่ต้องใช้" align="left">
+        <b-form-group label="อุปกรณ์ที่ต้องใช้" align="left">
           <b-form-input
             v-model="tool"
             class="w-5 p-3"
