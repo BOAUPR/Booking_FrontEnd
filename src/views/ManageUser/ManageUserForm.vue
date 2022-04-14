@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-button @click="addNew" size="sm" class="my-2 my-sm-0" >เพิ่มสินค้า</b-button>
     <b-modal
       id="modal-user"
       ref="modalUser"
@@ -176,7 +177,6 @@ export default {
         this.form.surname = this.user.surname
         this.form.roles = this.user.roles
         this.form.institution = this.user.institution
-        // this.allRoles2 = this.roless
         this.getValueInstitution()
       }
     },

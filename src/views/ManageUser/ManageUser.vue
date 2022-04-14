@@ -7,7 +7,7 @@
       <b-navbar-nav class="ml-auto">
         <b-nav-form>
           <b-form-input id="search" size="sm" class="mr-sm-2" placeholder="ค้นหา"></b-form-input>
-          <b-button size="sm" class="my-2 my-sm-0" type="submit" >เพิ่มผู้ใช้งาน</b-button>
+          <b-button size="sm" class="my-2 my-sm-0" type="submit" >ค้นหา</b-button>
         </b-nav-form>
       </b-navbar-nav>
     </b-navbar>
@@ -101,7 +101,7 @@ export default {
           }.bind(this)
         )
           .catch(() => {
-            this.makeToast('เพิ่มไม่สำเร็จ', 'ไม่สามารถเพิ่มผู้ใช้งาน ' + item.name)
+            this.makeToast('เพิ่มไม่สำเร็จ', 'ไม่สามารถเพิ่มผู้ใช้งาน ' + item.name, 'danger')
           })
       } else {
         // Updata
