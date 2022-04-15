@@ -103,7 +103,6 @@
   </div>
 </template>
 <script>
-// import api from '../services/api'
 import Checkbox from 'vue-material-checkbox'
 export default {
   components: {
@@ -169,15 +168,12 @@ export default {
     },
 
     getValueApprover () {
-      // console.log(this.allApprov2)
       for (const i of this.allApprov2) {
         this.allApprov.push({
           value: i,
           text: i.name + ' ' + i.surname
         })
       }
-      // console.log('--------')
-      // console.log(this.allApprov)
     },
     show () {
       this.$refs.modalRoom.show()
@@ -214,7 +210,6 @@ export default {
     },
     submit () {
       const room = JSON.parse(JSON.stringify(this.form))
-      // building.price = parseFloat(product.price)
       this.$emit('save', room)
       this.reset()
     },

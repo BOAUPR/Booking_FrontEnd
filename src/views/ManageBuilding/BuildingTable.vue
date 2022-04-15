@@ -64,7 +64,6 @@ export default {
       })
     },
     saveBuilding (building) {
-      console.log('Submit', building)
       api.put('http://localhost:3000/building/' + building._id, building).then(
         (response) => {
           const updateBuilding = response.data
