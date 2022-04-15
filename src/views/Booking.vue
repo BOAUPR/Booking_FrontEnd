@@ -130,8 +130,14 @@ export default {
     validateEndDate () {
       return this.endDate && this.endDate != null
     },
+    validateCheckDate () {
+      return this.startDate > this.endDate
+    },
+    validateCheckTime () {
+      return this.startTime >= this.endTime
+    },
     validateForm () {
-      return this.validateReason && this.validateStartDate && this.validateEndDate
+      return this.validateReason && this.validateStartDate && this.validateEndDate && this.validateCheckDate && this.validateCheckTime
     }
   },
   components: {
