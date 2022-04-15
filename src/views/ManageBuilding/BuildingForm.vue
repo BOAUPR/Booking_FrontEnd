@@ -40,7 +40,7 @@
 
        <b-form-group
         id="form-group-building-floor"
-        label="ชื่ออาคาร"
+        label="จำนวนชั้น"
         label-for="building-floor"
        >
         <b-form-input
@@ -53,12 +53,6 @@
        </b-form-group>
 
      </b-form>
-     <b-card>
-        <pre>
-        {{ form }}
-      </pre
-        >
-      </b-card>
     </b-modal>
   </div>
 </template>
@@ -88,7 +82,7 @@ export default {
       return this.form.floor >= 1
     },
     validateCode () {
-      return this.form.name.length >= 1
+      return this.form.code.length >= 1
     },
     validateForm () {
       return this.validateName && this.validateFloor && this.validateCode
