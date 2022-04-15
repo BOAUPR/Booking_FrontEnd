@@ -73,7 +73,7 @@
       @ready="ready($event)"
       @view-change="viewChange($event)"
     />
-    <router-link to="/status"><b-button @click="addEvent()">Add</b-button></router-link>
+    <router-link to="/status"><b-button @click="addEvent()">ยืนยันการจอง</b-button></router-link>
   </b-container>
 </template>
 <script>
