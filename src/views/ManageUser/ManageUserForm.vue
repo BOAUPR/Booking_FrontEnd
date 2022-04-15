@@ -1,6 +1,5 @@
 <template>
   <div>
-    <b-button @click="addNew" size="sm" class="my-2 my-sm-0" >เพิ่มผู้ใช้งาน</b-button>
     <b-modal
       id="modal-user"
       ref="modalUser"
@@ -48,9 +47,10 @@
           label-for="user-roles"
 
         >
-          <tr v-for="roles in allRoles" :key="roles">
-           <Checkbox v-model="selectRoles" :value="roles"> : {{ roles }} </Checkbox>
-        </tr>
+          <b-form-radio-group v-model="form.roles" :options="allRoles" :state="state" name="radio-validation">
+            <b-form-invalid-feedback :state="state">select one</b-form-invalid-feedback>
+            <b-form-valid-feedback :state="state">เรียบร้อย</b-form-valid-feedback>
+          </b-form-radio-group>
         </b-form-group>
 
         <b-form-group
@@ -77,10 +77,9 @@
   </div>
 </template>
 <script>
-import Checkbox from 'vue-material-checkbox'
+
 export default {
   components: {
-    Checkbox
   },
   props: {
     user: Object,
@@ -99,7 +98,8 @@ export default {
       isAddNew: false,
       allInstitution: [],
       allRoles: ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER'],
-      selectRoles: []
+      selectRoles: [],
+      value: []
     }
   },
   computed: {
@@ -117,27 +117,26 @@ export default {
     },
     validateForm () {
       return this.validateName && this.validateSurname && this.validateRoles && this.validateInstitution
+    },
+    state () {
+      return Boolean(this.value)
     }
   },
   methods: {
     check (e) {
       this.$nextTick(() => {
         if (e.target.checked) {
-          // console.log(e.target.value) // Pass this value in API
         }
       })
     },
 
     getValueInstitution () {
-      // console.log(this.institutions)
       for (const i of this.institutions) {
         this.allInstitution.push({
           value: i,
           text: i.name
         })
       }
-      // console.log('----------')
-      // console.log(this.allInstitution)
     },
     addNew () {
       this.isAddNew = true
@@ -163,21 +162,8 @@ export default {
         roles: [{}],
         institution: {}
       }
-      this.allRoles = []
-      this.allInstitution = []
-      this.selectRoles = []
-    },
-    resetNew () {
-      this.form = {
-        _id: '',
-        name: '',
-        surname: '',
-        roles: [{}],
-        institution: {}
-      }
       this.allRoles = ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER']
-      this.getValueInstitution()
-      // this.allInstitution = this.user.institution
+      this.allInstitution = []
       this.selectRoles = []
     },
     showModal (evt) {
@@ -204,6 +190,8 @@ export default {
         this.$bvModal.hide('modal-user')
       })
     }
+  },
+  mounted () {
   }
 }
 </script>
