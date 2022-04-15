@@ -131,13 +131,10 @@ export default {
       return this.endDate && this.endDate != null
     },
     validateCheckDate () {
-      return this.startDate > this.endDate
-    },
-    validateCheckTime () {
-      return this.startTime >= this.endTime
+      return this.startDate <= this.endDate
     },
     validateForm () {
-      return this.validateReason && this.validateStartDate && this.validateEndDate && this.validateCheckDate && this.validateCheckTime
+      return this.validateReason && this.validateStartDate && this.validateEndDate && this.validateCheckDate
     }
   },
   components: {
@@ -170,6 +167,7 @@ export default {
         user: this.$store.getters['auth/isUserId'],
         approveres: this.roomb.approveres
       }
+
       if (!this.validateForm) return
       console.log(event)
 
