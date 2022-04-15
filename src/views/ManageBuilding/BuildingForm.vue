@@ -22,6 +22,9 @@
             autofocus
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateCode">
+            รหัสอาคารต้องมีความยาวอย่างน้อย 1 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -36,11 +39,14 @@
             :state="validateName"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateName">
+            ชื่ออาคารต้องมีความยาวอย่างน้อย 3 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
         id="form-group-building-floor"
-        label="ชื่ออาคาร"
+        label="จำนวนชั้น"
         label-for="building-floor"
        >
         <b-form-input
@@ -50,15 +56,12 @@
             :state="validateFloor"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateFloor">
+            จำนวนชั้นอาคารต้องมีอย่างน้อย 1 ชั้น
+          </b-form-invalid-feedback>
        </b-form-group>
 
      </b-form>
-     <b-card>
-        <pre>
-        {{ form }}
-      </pre
-        >
-      </b-card>
     </b-modal>
   </div>
 </template>
@@ -88,7 +91,7 @@ export default {
       return this.form.floor >= 1
     },
     validateCode () {
-      return this.form.name.length >= 1
+      return this.form.code.length >= 1
     },
     validateForm () {
       return this.validateName && this.validateFloor && this.validateCode
@@ -122,7 +125,6 @@ export default {
     },
     submit () {
       const building = JSON.parse(JSON.stringify(this.form))
-      // building.price = parseFloat(product.price)
       this.$emit('save', building)
       this.reset()
     },

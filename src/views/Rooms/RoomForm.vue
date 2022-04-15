@@ -22,6 +22,9 @@
             autofocus
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateCode">
+            รหัสห้องต้องมีความยาวอย่างน้อย 1 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -36,6 +39,9 @@
             :state="validateName"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateName">
+            ชื่อห้องต้องมีความยาวอย่างน้อย 3 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -50,6 +56,9 @@
             :state="validateCap"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateCap">
+            ห้องต้องมีความจุอย่างน้อย 30 คน
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -64,6 +73,9 @@
             :state="validateFloor"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateFloor">
+            ชั้นที่อยุ่ต้องอย่างน้อย 1
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -93,17 +105,10 @@
        </b-form-group>
 
      </b-form>
-     <b-card>
-        <pre>
-        {{ form }}
-      </pre
-        >
-      </b-card>
     </b-modal>
   </div>
 </template>
 <script>
-// import api from '../services/api'
 import Checkbox from 'vue-material-checkbox'
 export default {
   components: {
@@ -139,10 +144,10 @@ export default {
       return this.form.floor >= 1
     },
     validateCap () {
-      return this.form.capacity >= 50
+      return this.form.capacity >= 30
     },
     validateCode () {
-      return this.form.name.length >= 1
+      return this.form.code.length >= 1
     },
     validateEquip () {
       return true
@@ -169,15 +174,12 @@ export default {
     },
 
     getValueApprover () {
-      // console.log(this.allApprov2)
       for (const i of this.allApprov2) {
         this.allApprov.push({
           value: i,
           text: i.name + ' ' + i.surname
         })
       }
-      // console.log('--------')
-      // console.log(this.allApprov)
     },
     show () {
       this.$refs.modalRoom.show()
@@ -214,7 +216,6 @@ export default {
     },
     submit () {
       const room = JSON.parse(JSON.stringify(this.form))
-      // building.price = parseFloat(product.price)
       this.$emit('save', room)
       this.reset()
     },

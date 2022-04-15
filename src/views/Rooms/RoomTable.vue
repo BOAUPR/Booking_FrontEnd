@@ -54,7 +54,6 @@ export default {
       })
     },
     saveRoom (room) {
-      // console.log('Submit', room)
       api.put('http://localhost:3000/room/' + room._id, room).then(
         (response) => {
           const updateRoom = response.data
@@ -78,7 +77,6 @@ export default {
       })
     },
     getApprover2 (item) {
-      // console.log(item)
       var approv = []
       for (let index = 0; index < item.length; index++) {
         approv += item[index].name + ' ' + item[index].surname + ''
@@ -86,7 +84,6 @@ export default {
           approv += ', '
         }
       }
-      // console.log(approv)
       return approv
     },
     getAllApprover (idInstitution) {

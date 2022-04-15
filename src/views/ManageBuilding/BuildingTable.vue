@@ -64,11 +64,9 @@ export default {
       })
     },
     saveBuilding (building) {
-      console.log('Submit', building)
       api.put('http://localhost:3000/building/' + building._id, building).then(
         (response) => {
           const updateBuilding = response.data
-          console.log(updateBuilding)
           this.getBuilding()
           this.makeToast('แก้ไขสำเร็จ', 'อาคาร ' + updateBuilding._id + ' แก้ไขแล้ว')
         }
@@ -87,7 +85,6 @@ export default {
       return rooms
     },
     editBuilding (item) {
-      console.log('....')
       this.selectedItem = JSON.parse(JSON.stringify(item))
       this.$nextTick(() => {
         this.$refs.buildingForm.show()
