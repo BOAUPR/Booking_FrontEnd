@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-button @click="addNew" size="sm" class="my-2 my-sm-0" >เพิ่มสินค้า</b-button>
+    <b-button @click="addNew" size="sm" class="my-2 my-sm-0" >เพิ่มผู้ใช้งาน</b-button>
     <b-modal
       id="modal-user"
       ref="modalUser"
@@ -60,7 +60,7 @@
         >
           <b-form-select v-model="form.institution" :options="allInstitution" class="mb-3">
           <template #first>
-        <b-form-select-option :value="null" disabled>-- Please select an option --</b-form-select-option>
+        <b-form-select-option :value="null" disabled>-- select an option --</b-form-select-option>
           </template>
         </b-form-select>
 
@@ -110,7 +110,7 @@ export default {
       return this.form.surname.length >= 1
     },
     validateRoles () {
-      return this.form.roles.length >= 1
+      return this.form.roles.length === 1
     },
     validateInstitution () {
       return this.form.institution.length >= 1
@@ -167,9 +167,22 @@ export default {
       this.allInstitution = []
       this.selectRoles = []
     },
+    resetNew () {
+      this.form = {
+        _id: '',
+        name: '',
+        surname: '',
+        roles: [{}],
+        institution: {}
+      }
+      this.allRoles = ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER']
+      this.getValueInstitution()
+      // this.allInstitution = this.user.institution
+      this.selectRoles = []
+    },
     showModal (evt) {
       if (this.isAddNew) {
-        this.reset()
+        this.resetNew()
       } else {
         // Edit
         this.form._id = this.user._id

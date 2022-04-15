@@ -44,7 +44,7 @@
               {{ getName(item.name,item.surname) }}
             </template>
             <template #cell(roles)="{ item }">
-              {{ getRolse(item.roles) }}
+              {{ getRolseName(item.roles) }}
             </template>
             <template #cell(institution)="{ item }">
               {{ item.institution.name }}
@@ -66,6 +66,8 @@ export default {
   methods: {
     editUser (item) {
       this.allRoles = item.roles
+      console.log('--------------------5')
+      console.log(this.allRoles)
       this.selectedItem = JSON.parse(JSON.stringify(item))
       this.$nextTick(() => {
         this.$refs.manageUserForm.show()
@@ -136,6 +138,18 @@ export default {
       console.log('--------------------')
       console.log(this.allInstitution)
     },
+    // getRoles (item) {
+    //   const self = this
+    //   api.get('http://localhost:3000/users/').then((response) => {
+    //     console.log('--------------------4')
+    //     console.log(response.data)
+    //     console.log('--------------------5')
+    //     console.log(item._id.roles)
+    //     self.allRoles = response.data
+    //   })
+    //   console.log('--------------------')
+    //   console.log(this.allInstitution)
+    // },
     getUsers () {
       const self = this
       api.get('http://localhost:3000/users').then(
@@ -147,7 +161,7 @@ export default {
       console.log(this.fields)
     },
 
-    getRolse (item) {
+    getRolseName (item) {
       var roles = []
       for (let index = 0; index < item.length; index++) {
         roles += item[index]
@@ -194,6 +208,7 @@ export default {
   mounted () {
     this.getUsers()
     this.getInstitution()
+    // this.getRoles()
   }
 }
 </script>
