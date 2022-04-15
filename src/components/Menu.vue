@@ -89,7 +89,6 @@ export default {
     },
     isSurname () {
       return this.$store.getters['auth/isSurname']
-
     }
   }
 }

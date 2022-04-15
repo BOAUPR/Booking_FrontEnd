@@ -4,6 +4,10 @@ export function getEvents (startDate, endDate) {
   return api.get('/booking', { params: { startDate: startDate, endDate: endDate } })
 }
 
+export function getEventsByRoom (startDate, endDate, id) {
+  return api.get('/booking/room/' + id, { params: { startDate: startDate, endDate: endDate } })
+}
+
 export function addEvent (event) {
   return api.post('/booking', event)
 }

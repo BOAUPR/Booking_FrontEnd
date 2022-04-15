@@ -80,7 +80,7 @@
 import VueCal from 'vue-cal'
 import 'vue-cal/dist/vuecal.css'
 import th from '../locale/th'
-import { getEvents, addEvent, addApprover } from '../services/event'
+import { getEventsByRoom, addEvent, addApprover } from '../services/event'
 import api from '../services/api.js'
 export default {
   props: ['roomid'],
@@ -194,7 +194,7 @@ export default {
     },
     async ready (e) {
       // console.log('ready', e)
-      const res = await getEvents(e.startDate, e.endDate)
+      const res = await getEventsByRoom(e.startDate, e.endDate, this.roomid)
       const newEvents = res.data.map(function (event) {
         return {
           start: new Date(event.startDate),
@@ -208,7 +208,7 @@ export default {
     },
     async viewChange (e) {
       // console.log('view-change', e)
-      const res = await getEvents(e.startDate, e.endDate)
+      const res = await getEventsByRoom(e.startDate, e.endDate, this.roomid)
       const newEvents = res.data.map(function (event) {
         return {
           transactionDate: new Date().toLocaleDateString(),
