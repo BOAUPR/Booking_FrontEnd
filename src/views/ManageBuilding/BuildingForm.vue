@@ -125,7 +125,6 @@ export default {
     },
     submit () {
       const building = JSON.parse(JSON.stringify(this.form))
-      // building.price = parseFloat(product.price)
       this.$emit('save', building)
       this.reset()
     },
