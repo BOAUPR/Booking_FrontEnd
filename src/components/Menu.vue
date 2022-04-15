@@ -1,8 +1,10 @@
 <template>
   <div class="app-menu min-vh-100">
     <b-img src="../assets/chicken.jpg" width="100%" center class="pt-4 pb-4"></b-img>
-    <div class="h3">
-      {{ isRole[0] }}
+    <div class="h5">
+      {{ isRole.toString() }}
+      <br>
+      {{ isName }} {{ isSurname }}
     </div>
     <br>
     <br>
@@ -35,6 +37,12 @@ export default {
   computed: {
     isRole () {
       return this.$store.getters['auth/isRole']
+    },
+    isName () {
+      return this.$store.getters['auth/isName']
+    },
+    isSurname () {
+      return this.$store.getters['auth/isSurname']
     }
   }
 }

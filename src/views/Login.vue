@@ -6,12 +6,6 @@
           <b-card
             title="Login"
           >
-            <img
-              alt="Vue logo"
-              src="../assets/logo_user.png"
-              width="100"
-              class="mb-2"
-            />
             <b-card-text>
               <div>
               <b-form @submit="onSubmit" @reset="onReset" v-if="show">
