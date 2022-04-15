@@ -5,13 +5,9 @@
     <div class="row">
       <div class="col-md-3" v-for="item in buildings" :key="item.id">
         <div class="card">
-          <img src="../assets/chicken.jpg" class="card-img-top" />
+          <img :src="getImgUrl(item.code)" :alt="item" class="card-img-top" />
           <div class="card-body">
             <h4 class="card-title">{{ item.name }}</h4>
-            <!-- <div class="row justify-content-center">
-              <a href="/room" class="router-link"
-                ><button class="btn btn-primary">ดูรายละเอียด</button></a>
-            </div> -->
             <router-link :to="'/building/' + item._id + '/room'"><button class="btn btn-primary">ดูรายละเอียด</button></router-link>
           </div>
         </div>
@@ -30,6 +26,9 @@ export default {
     }
   },
   methods: {
+    getImgUrl (pic) {
+      return require('../assets/' + pic + '.jpg')
+    },
     getBuildings () {
       const self = this
       axios.get('http://localhost:3000/building').then((response) => {

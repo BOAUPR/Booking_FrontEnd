@@ -7,7 +7,7 @@
         <b-row>
           <b-col>
             <div class="col-md-7">
-              <img src="../assets/chicken.jpg" class="card-img-top" />
+              <img :src="getImgUrl(building.code)" :alt="item" class="card-img-top" />
             </div>
           </b-col>
           <b-col>
@@ -48,6 +48,9 @@ export default {
     }
   },
   methods: {
+    getImgUrl (pic) {
+      return require('../assets/' + pic + '.jpg')
+    },
     isBuilding (items) {
       const self = this
       if (self.check === false) {
