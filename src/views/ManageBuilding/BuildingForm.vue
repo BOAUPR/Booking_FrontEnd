@@ -22,6 +22,9 @@
             autofocus
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateCode">
+            รหัสอาคารต้องมีความยาวอย่างน้อย 1 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -36,6 +39,9 @@
             :state="validateName"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateName">
+            ชื่ออาคารต้องมีความยาวอย่างน้อย 3 ตัวอักษร
+          </b-form-invalid-feedback>
        </b-form-group>
 
        <b-form-group
@@ -50,6 +56,9 @@
             :state="validateFloor"
           >
           </b-form-input>
+          <b-form-invalid-feedback :state="validateFloor">
+            จำนวนชั้นอาคารต้องมีอย่างน้อย 1 ชั้น
+          </b-form-invalid-feedback>
        </b-form-group>
 
      </b-form>
