@@ -5,7 +5,7 @@
     <div class="row">
       <div class="col-md-3" v-for="item in buildings" :key="item.id">
         <div class="card">
-          <img :src="getImgUrl(item.code)" :alt="item" class="card-img-top" />
+          <img :src="getImgUrl(item.code)" class="card-img-top" />
           <div class="card-body">
             <h4 class="card-title">{{ item.name }}</h4>
             <router-link :to="'/building/' + item._id + '/room'"><button class="btn btn-primary">ดูรายละเอียด</button></router-link>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../services/api'
 export default {
   data () {
     return {
@@ -31,15 +31,15 @@ export default {
     },
     getBuildings () {
       const self = this
-      axios.get('http://localhost:3000/building').then((response) => {
-        console.log(response)
+      api.get('http://localhost:3000/building').then((response) => {
+        // console.log(response)
         self.buildings = response.data
       })
     },
     getBuilding (itembd) {
       const self = this
-      axios.get('http://localhost:3000/building/' + itembd).then((response) => {
-        console.log(response)
+      api.get('http://localhost:3000/building/' + itembd).then((response) => {
+        // console.log(response)
         self.building = response.data
       })
     }

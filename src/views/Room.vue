@@ -1,13 +1,11 @@
 <template>
   <div>
-    {{ isBuilding(buildingid) }}
-    {{ getRooms(buildingid) }}
     <b-container fluid>
       <b-card align="left">
         <b-row>
           <b-col>
             <div class="col-md-7">
-              <img :src="getImgUrl(building.code)" :alt="item" class="card-img-top" />
+              <img :src="getImgUrl(building.code)" class="card-img-top" />
             </div>
           </b-col>
           <b-col>
@@ -21,7 +19,6 @@
       </b-card>
       <b-table :items="numRoom" :fields="fields">
         <template #cell(operators)="{ item }">
-          <!-- <b-button to="/booking" variant="danger" @click="editRoom(item)">จองห้อง</b-button> -->
           <router-link :to="'/room/' + item._id + '/booking'" @click="editRoom(item)"><button class="btn btn-primary">จองห้อง</button></router-link>
         </template>
       </b-table>
@@ -29,7 +26,7 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
+import api from '../services/api'
 export default {
   props: ['buildingid'],
   data () {
@@ -43,20 +40,25 @@ export default {
       ],
       building: [],
       numRoom: [],
+      imgB: '',
       check: false,
       checkR: false
     }
   },
   methods: {
     getImgUrl (pic) {
-      return require('../assets/' + pic + '.jpg')
+      if (pic !== undefined) {
+        const im = pic + '.jpg'
+        return require('../assets/' + im)
+      }
     },
     isBuilding (items) {
       const self = this
       if (self.check === false) {
-        axios.get('http://localhost:3000/building/' + items).then((response) => {
-          console.log(response)
+        api.get('http://localhost:3000/building/' + items).then((response) => {
+          // console.log(response)
           self.building = response.data
+          self.imgB = self.building.code
         })
         self.check = true
       }
@@ -64,19 +66,19 @@ export default {
     getRooms (itemid) {
       const self = this
       if (self.checkR === false) {
-        axios.get('http://localhost:3000/room/building/' + itemid).then((response) => {
-          console.log(response)
+        api.get('http://localhost:3000/room/building/' + itemid).then((response) => {
+          // console.log(response)
           this.numRoom = response.data
         })
-        console.log(this.fields)
+        // console.log(this.fields)
         self.checkR = true
       }
     },
     editRoom (item) {}
   },
   mounted () {
-    // this.isBuilding()
-    // this.getRooms()
+    this.isBuilding(this.buildingid)
+    this.getRooms(this.buildingid)
   }
 }
 </script>
