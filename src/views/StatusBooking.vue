@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+import api from '../services/api'
 import { deleteBooking } from '../services/event'
 export default {
   data () {
@@ -44,20 +44,20 @@ export default {
   },
   methods: {
     isBooking (items) {
-      console.log(items)
+      // console.log(items)
       const self = this
       if (self.check === false && items != null) {
-        axios
+        api
           .get('http://localhost:3000/booking/users/' + items)
           .then((response) => {
-            console.log(response)
+            // console.log(response)
             self.booking = response.data
           })
         self.check = true
       }
     },
     deleteBooking (item) {
-      console.log(item)
+      // console.log(item)
       deleteBooking(item)
       window.location.reload()
     },

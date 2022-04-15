@@ -123,21 +123,21 @@ export default {
     check (e) {
       this.$nextTick(() => {
         if (e.target.checked) {
-          console.log(e.target.value) // Pass this value in API
+          // console.log(e.target.value) // Pass this value in API
         }
       })
     },
 
     getValueInstitution () {
-      console.log(this.institutions)
+      // console.log(this.institutions)
       for (const i of this.institutions) {
         this.allInstitution.push({
           value: i,
           text: i.name
         })
       }
-      console.log('----------')
-      console.log(this.allInstitution)
+      // console.log('----------')
+      // console.log(this.allInstitution)
     },
     addNew () {
       this.isAddNew = true

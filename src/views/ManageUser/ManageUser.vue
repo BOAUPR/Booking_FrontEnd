@@ -92,7 +92,7 @@ export default {
       }
     },
     saveUser (item) {
-      console.log('Submit', item)
+      // console.log('Submit', item)
       if (item._id === '') {
         // Add New
         api.post('http://localhost:3000/users/', item).then(
@@ -131,12 +131,12 @@ export default {
     getInstitution () {
       const self = this
       api.get('http://localhost:3000/institution/').then((response) => {
-        console.log('--------------------')
-        console.log(response.data)
+        // console.log('--------------------')
+        // console.log(response.data)
         self.allInstitution = response.data
       })
-      console.log('--------------------')
-      console.log(this.allInstitution)
+      // console.log('--------------------')
+      // console.log(this.allInstitution)
     },
     // getRoles (item) {
     //   const self = this
@@ -154,11 +154,11 @@ export default {
       const self = this
       api.get('http://localhost:3000/users').then(
         function (response) {
-          console.log(response)
+          // console.log(response)
           self.users = response.data
         }
       )
-      console.log(this.fields)
+      // console.log(this.fields)
     },
 
     getRolseName (item) {
@@ -169,7 +169,7 @@ export default {
           roles += ', '
         }
       }
-      console.log(roles)
+      // console.log(roles)
       return roles
     },
     // getAllRoles (item) {
@@ -182,7 +182,7 @@ export default {
     getName (itemName, itemSurname) {
       var name = ''
       name += itemName + ' ' + itemSurname
-      console.log(name)
+      // console.log(name)
       return name
     }
   },

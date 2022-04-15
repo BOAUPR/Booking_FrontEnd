@@ -148,7 +148,7 @@ export default {
       const self = this
       if (self.check === false) {
         api.get('http://localhost:3000/room/' + itemid).then((response) => {
-          console.log(response)
+          // console.log(response)
           self.roomb = response.data
           self.buildingb = self.roomb.building
           self.approveresu = self.roomb.approveres
@@ -169,31 +169,31 @@ export default {
       }
 
       if (!this.validateForm) return
-      console.log(event)
+      // console.log(event)
 
       const add = await addEvent(event)
-      console.log(JSON.stringify(add))
+      // console.log(JSON.stringify(add))
       const idBooking = JSON.parse(JSON.stringify(add.data._id))
-      console.log(idBooking)
+      // console.log(idBooking)
 
       api.get('http://localhost:3000/booking/Idbooking/' + idBooking).then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
       })
 
       for (let i = 0; i < this.approveresu.length; i++) {
-        console.log(this.approveresu[i]._id)
+        // console.log(this.approveresu[i]._id)
         const appPro = {
           user: this.approveresu[i]._id,
           booking: idBooking
         }
         addApprover(appPro)
       }
-      // console.log(this.$store.getters['auth/isUserId'])
+      // // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()
     },
     async ready (e) {
-      console.log('ready', e)
+      // console.log('ready', e)
       const res = await getEvents(e.startDate, e.endDate)
       const newEvents = res.data.map(function (event) {
         return {
@@ -207,7 +207,7 @@ export default {
       this.events = newEvents
     },
     async viewChange (e) {
-      console.log('view-change', e)
+      // console.log('view-change', e)
       const res = await getEvents(e.startDate, e.endDate)
       const newEvents = res.data.map(function (event) {
         return {

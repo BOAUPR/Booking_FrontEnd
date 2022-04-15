@@ -32,7 +32,7 @@
 </template>
 <script>
 
-import axios from 'axios'
+import api from '../../services/api'
 import BuildingForm from './BuildingForm.vue'
 export default {
   components: {
@@ -65,7 +65,7 @@ export default {
     },
     saveBuilding (building) {
       console.log('Submit', building)
-      axios.put('http://localhost:3000/building/' + building._id, building).then(
+      api.put('http://localhost:3000/building/' + building._id, building).then(
         (response) => {
           const updateBuilding = response.data
           console.log(updateBuilding)
@@ -94,7 +94,7 @@ export default {
       })
     },
     getBuilding () {
-      axios.get('http://localhost:3000/building').then((response) => {
+      api.get('http://localhost:3000/building').then((response) => {
         this.numBuilding = response.data
       })
     }
