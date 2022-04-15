@@ -50,10 +50,10 @@ export default {
     isUserId (state, getters) {
       return state.user._id
     },
-    name (state, getters) {
+    isName (state, getters) {
       return state.user.name.toString()
     },
-    surname (state, getters) {
+    isSurname (state, getters) {
       return state.user.surname.toString()
     }
   }

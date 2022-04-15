@@ -1,14 +1,13 @@
 <template>
   <div class="app-menu min-vh-100">
-    <b-img
-      src="../assets/chicken.jpg"
-      width="100%"
-      center
-      class="pt-4 pb-4"
-    ></b-img>
-    <div>{{isRole[0]}}</div>
-    <br />
-    <br />
+    <b-img src="../assets/chicken.jpg" width="100%" center class="pt-4 pb-4"></b-img>
+    <div class="h5">
+      {{ isRole.toString() }}
+      <br>
+      {{ isName }} {{ isSurname }}
+    </div>
+    <br>
+    <br>
     <b-nav vertical>
       <b-nav-item to="/building">
         <b-button class="buttonMenu" variant="outline-secondary">
@@ -85,11 +84,11 @@ export default {
     isRole () {
       return this.$store.getters['auth/isRole']
     },
-    nameString () {
-      return this.$store.getters['auth/name']
+    isName () {
+      return this.$store.getters['auth/isName']
     },
-    surnameString () {
-      return this.$store.getters['auth/surname']
+    isSurname () {
+      return this.$store.getters['auth/isSurname']
     }
   }
 }

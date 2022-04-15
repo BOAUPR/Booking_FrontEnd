@@ -1,7 +1,5 @@
 <template>
   <div class="container my-5">
-    <h1 align="left">ค้นหา</h1>
-    <b-input class="m-3"></b-input>
     <div class="row">
       <div class="col-md-3" v-for="item in buildings" :key="item.id">
         <div class="card">
