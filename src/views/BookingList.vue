@@ -53,18 +53,18 @@ export default {
       const ourBooking = []
       self.userb = self.$store.getters['auth/isUserId']
       api.get('http://localhost:3000/booking/getall').then((response) => {
-        // console.log(response)
+        // // console.log(response)
         self.waitingapprover = response.data
-        // console.log(self.waitingapprover[0].room)
-        // console.log(self.userb)
+        // // console.log(self.waitingapprover[0].room)
+        // // console.log(self.userb)
         for (let i = 0; i < self.waitingapprover.length; i++) {
-          // console.log(self.waitingapprover[i].approveres)
+          // // console.log(self.waitingapprover[i].approveres)
           self.approveres = self.waitingapprover[i].approveres
           for (let j = 0; j < self.approveres.length; j++) {
             const approver = self.approveres[j]
-            // console.log(approver)
+            // // console.log(approver)
             if (approver.user === self.userb) {
-              // console.log('im here')
+              // // console.log('im here')
               if (approver.status === '0') {
                 ourBooking.push(self.waitingapprover[i])
                 break
@@ -73,17 +73,17 @@ export default {
           }
         }
         self.needApprove = ourBooking
-        // console.log('Here :' + self.needApprove)
+        // // console.log('Here :' + self.needApprove)
       })
-      // console.log('Here out :' + self.needApprove)
+      // // console.log('Here out :' + self.needApprove)
     },
     accept (item) {
       // const approveres = item.approveres
       for (let i = 0; i < item.approveres.length; i++) {
         const approver = item.approveres[i]
-        // console.log(approver)
+        // // console.log(approver)
         if (approver.user === this.userb) {
-          // console.log('im here')
+          // // console.log('im here')
           const updateApprover = approver
           updateApprover.status = '1'
           api.put(
@@ -97,7 +97,7 @@ export default {
       var count = 0
       for (let i = 0; i < item.approveres.length; i++) {
         const approver = item.approveres[i]
-        // console.log(approver)
+        // // console.log(approver)
         if (approver.status === '1') {
           count++
         }

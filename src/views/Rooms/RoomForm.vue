@@ -103,7 +103,7 @@
   </div>
 </template>
 <script>
-// import axios from 'axios'
+// import api from '../services/api'
 import Checkbox from 'vue-material-checkbox'
 export default {
   components: {
@@ -163,21 +163,21 @@ export default {
     check (e) {
       this.$nextTick(() => {
         if (e.target.checked) {
-          console.log(e.target.value) // Pass this value in API
+          // console.log(e.target.value) // Pass this value in API
         }
       })
     },
 
     getValueApprover () {
-      console.log(this.allApprov2)
+      // console.log(this.allApprov2)
       for (const i of this.allApprov2) {
         this.allApprov.push({
           value: i,
           text: i.name + ' ' + i.surname
         })
       }
-      console.log('--------')
-      console.log(this.allApprov)
+      // console.log('--------')
+      // console.log(this.allApprov)
     },
     show () {
       this.$refs.modalRoom.show()
