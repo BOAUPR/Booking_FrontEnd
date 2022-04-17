@@ -46,7 +46,6 @@
               </b-form>
               </div>
               {{ $store.state.auth.user }}
-              {{ $store.getters['auth/isLogin'] }}
             </b-card-text>
           </b-card>
         </b-col>

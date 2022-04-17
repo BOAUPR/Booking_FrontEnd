@@ -18,7 +18,10 @@
             >จัดการเรียนการสอน</b-form-radio
           >
           <b-form-group label="เรื่อง" label-cols="1">
-            <b-form-input v-model="reason" type="text"></b-form-input>
+            <b-form-input v-model="reason" type="text" :state="validateReason"></b-form-input>
+            <b-form-invalid-feedback :state="validateReason">
+            วัตถุประประสงค์ต้องมีความยาวอย่างน้อย 1 ตัวอักษร
+            </b-form-invalid-feedback>
           </b-form-group>
           <label for="start-date">วันเริ่มต้น</label>
           <b-form-datepicker
