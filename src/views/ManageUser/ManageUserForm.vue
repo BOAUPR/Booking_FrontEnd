@@ -142,6 +142,7 @@ export default {
     getValueInstitution () {
       if (this.roless[0] === 'LOCAL_ADMIN') {
         for (const i of this.institutions) {
+          // console.log(i)
           this.allInstitution.push({
             value: i,
             text: i.name
@@ -180,6 +181,7 @@ export default {
       this.form.username = this.user.username
       this.form.password = this.user.password
       this.selectinstitution(this.form.institution)
+      // console.log(this.form.institution)
       // this.form.institution = {}
       // this.form.institution = this.yourInsti._id
       // console.log(this.yourInsti)
@@ -199,11 +201,16 @@ export default {
       this.selectRoles = []
     },
     selectinstitution (name) {
+      if (this.roless[0] === 'LOCAL_ADMIN') {
+        name = name.name
+      }
       const self = this
       api
         .get('http://localhost:3000/institution/name/' + name)
         .then((response) => {
           self.yourInsti = response.data[0]
+          // console.log(self.yourInsti)
+          // console.log(self.yourInsti._id)
           self.form.institution = self.yourInsti._id
           // console.log(self.user)
           // console.log(self.form)
