@@ -45,10 +45,16 @@
           id="form-group-user-roles"
           label="สถานะ"
           label-for="user-roles"
-
         >
-          <b-form-radio-group v-model="form.roles" :options="allRoles" :state="state" name="radio-validation">
-            <b-form-invalid-feedback :state="state">select one</b-form-invalid-feedback>
+          <b-form-radio-group
+            v-model="form.roles"
+            :options="allRoles"
+            :state="state"
+            name="radio-validation"
+          >
+            <b-form-invalid-feedback :state="state"
+              >select one</b-form-invalid-feedback
+            >
           </b-form-radio-group>
         </b-form-group>
 
@@ -57,12 +63,17 @@
           label="หน่วยงาน"
           label-for="user-institution"
         >
-          <b-form-select v-model="form.institution" :options="allInstitution" class="mb-3">
-          <template #first>
-        <b-form-select-option :value="null" disabled>-- select an option --</b-form-select-option>
-          </template>
-        </b-form-select>
-
+          <b-form-select
+            v-model="form.institution"
+            :options="allInstitution"
+            class="mb-3"
+          >
+            <template #first>
+              <b-form-select-option :value="null" disabled
+                >-- select an option --</b-form-select-option
+              >
+            </template>
+          </b-form-select>
         </b-form-group>
       </b-form>
       <b-card>
@@ -75,10 +86,9 @@
   </div>
 </template>
 <script>
-
+import api from '../../services/api.js'
 export default {
-  components: {
-  },
+  components: {},
   props: {
     user: Object,
     roless: Array,
@@ -98,7 +108,8 @@ export default {
       allInstitution: [],
       allRoles: [{}],
       selectRoles: [],
-      value: []
+      value: [],
+      yourInsti: {}
     }
   },
   computed: {
@@ -115,7 +126,12 @@ export default {
       return this.form.institution.length !== 0
     },
     validateForm () {
-      return this.validateName && this.validateSurname && this.validateRoles && this.validateInstitution
+      return (
+        this.validateName &&
+        this.validateSurname &&
+        this.validateRoles &&
+        this.validateInstitution
+      )
     },
     state () {
       return Boolean(this.value)
@@ -163,9 +179,18 @@ export default {
       this.$refs.modalUser.show()
     },
     submit () {
-      const user = JSON.parse(JSON.stringify(this.form))
-      this.$emit('save', user)
-      this.reset()
+      const selectThis = []
+      selectThis.push(this.form.roles)
+      this.form.roles = []
+      this.form.roles = selectThis
+      this.form.username = this.user.username
+      this.form.password = this.user.password
+      this.selectinstitution(this.form.institution)
+      // this.form.institution = {}
+      // this.form.institution = this.yourInsti._id
+      // console.log(this.yourInsti)
+      // console.log(this.user)
+      // console.log(this.form)
     },
     reset () {
       this.form = {
@@ -178,6 +203,20 @@ export default {
       this.allRoles = []
       this.allInstitution = []
       this.selectRoles = []
+    },
+    selectinstitution (name) {
+      const self = this
+      api
+        .get('http://localhost:3000/institution/name/' + name)
+        .then((response) => {
+          self.yourInsti = response.data[0]
+          self.form.institution = self.yourInsti._id
+          console.log(self.user)
+          console.log(self.form)
+          const user = JSON.parse(JSON.stringify(self.form))
+          this.$emit('save', user)
+          this.reset()
+        })
     },
     showModal (evt) {
       if (this.isAddNew) {
@@ -205,8 +244,7 @@ export default {
       })
     }
   },
-  mounted () {
-  }
+  mounted () {}
 }
 </script>
 <style></style>
