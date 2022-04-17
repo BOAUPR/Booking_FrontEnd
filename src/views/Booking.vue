@@ -163,6 +163,7 @@ export default {
         endDate: new Date(this.endDate + ' ' + this.endTime),
         reason: this.reason,
         tool: this.tool,
+        status: '0',
         room: this.roomb._id,
         user: this.$store.getters['auth/isUserId'],
         approveres: this.roomb.approveres
@@ -176,9 +177,7 @@ export default {
       const idBooking = JSON.parse(JSON.stringify(add.data._id))
       // console.log(idBooking)
 
-      api.get('http://localhost:3000/booking/Idbooking/' + idBooking).then((response) => {
-        // console.log(response.data)
-      })
+      event.approveres = []
 
       for (let i = 0; i < this.approveresu.length; i++) {
         // console.log(this.approveresu[i]._id)
@@ -186,11 +185,21 @@ export default {
           user: this.approveresu[i]._id,
           booking: idBooking
         }
-        addApprover(appPro)
+        const approverHere = await addApprover(appPro)
+        const idApprover = JSON.parse(JSON.stringify(approverHere.data._id))
+        console.log('here id' + idApprover)
+        event.approveres.push(idApprover)
+        console.log('here app' + event.approveres)
+        api.put('http://localhost:3000/booking/' + idBooking, event).then((response) => {
+        // console.log(response.data)
+        })
       }
       // // console.log(this.$store.getters['auth/isUserId'])
       // this.$router.push('Status')
       // window.location.reload()
+      // api.get('http://localhost:3000/booking/getall').then((response) => {
+      //   console.log(response.data)
+      // })
     },
     async ready (e) {
       // console.log('ready', e)
