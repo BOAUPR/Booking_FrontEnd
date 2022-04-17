@@ -2,7 +2,11 @@
   <div>
     <b-container fluid>
       <b-navbar>
-      <b-navbar-brand href="#">จัดการผู้ใช้งาน</b-navbar-brand>
+      <header class="bd-content" align="left">
+      <h1 class="bv-no-focus-ring">
+        <span class="bd-content-title">จัดการข้อมูลผู้ใช้งาน</span>
+      </h1>
+    </header>
       <b-navbar-nav class="ml-auto">
       </b-navbar-nav>
     </b-navbar>
@@ -125,7 +129,7 @@ export default {
       if (this.userRoles[0] === 'ADMIN') {
         this.getUserIns()
       } else if (this.userRoles[0] === 'LOCAL_ADMIN') {
-        this.getUser()
+        this.getUsers()
       }
     },
 

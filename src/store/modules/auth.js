@@ -16,19 +16,19 @@ export default {
   },
   actions: {
     async login ({ commit }, payload) {
-      console.log(payload)
+      // console.log(payload)
       try {
         const res = await login(payload.username, payload.password)
         const user = res.data.user
         const token = res.data.token
         localStorage.setItem('token', token)
         localStorage.setItem('user', JSON.stringify(user))
-        console.log(res)
+        // console.log(res)
 
         router.push('/')
         commit(AUTH_LOGIN, user)
       } catch (e) {
-        console.log('Error')
+        // console.log('Error')
       }
     },
     logout ({ commit }) {

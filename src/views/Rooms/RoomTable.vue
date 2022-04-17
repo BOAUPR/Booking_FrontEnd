@@ -1,6 +1,13 @@
 <template>
   <div>
     <b-container fluid>
+
+      <header class="bd-content" align="left">
+      <h1 class="bv-no-focus-ring">
+        <span class="bd-content-title">จัดการข้อมูลห้อง</span>
+      </h1>
+      </header>
+
       <b-row>
         <b-col>
           <RoomForm :room="selectedItem" :approvs="allApprov"

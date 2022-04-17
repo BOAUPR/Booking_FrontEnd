@@ -1,5 +1,12 @@
 <template>
   <div class="container my-5">
+
+    <header class="bd-content" align="left">
+      <h1 class="bv-no-focus-ring">
+        <span class="bd-content-title">ตึก</span>
+      </h1>
+    </header>
+
     <div class="row">
       <div class="col-md-3" v-for="item in buildings" :key="item.id">
         <div class="card">

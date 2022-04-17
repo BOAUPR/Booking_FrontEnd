@@ -76,12 +76,6 @@
           </b-form-select>
         </b-form-group>
       </b-form>
-      <b-card>
-        <pre>
-        {{ form }}
-      </pre
-        >
-      </b-card>
     </b-modal>
   </div>
 </template>
@@ -211,8 +205,8 @@ export default {
         .then((response) => {
           self.yourInsti = response.data[0]
           self.form.institution = self.yourInsti._id
-          console.log(self.user)
-          console.log(self.form)
+          // console.log(self.user)
+          // console.log(self.form)
           const user = JSON.parse(JSON.stringify(self.form))
           this.$emit('save', user)
           this.reset()
