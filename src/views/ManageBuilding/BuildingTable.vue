@@ -1,6 +1,13 @@
 <template>
   <div>
     <b-container fluid>
+
+      <header class="bd-content" align="left">
+      <h1 class="bv-no-focus-ring">
+        <span class="bd-content-title">จัดการข้อมูลตึก</span>
+      </h1>
+      </header>
+
       <b-row>
         <b-col>
           <BuildingForm :building="selectedItem"
@@ -68,10 +75,10 @@ export default {
         (response) => {
           const updateBuilding = response.data
           this.getBuilding()
-          this.makeToast('แก้ไขสำเร็จ', 'อาคาร ' + updateBuilding._id + ' แก้ไขแล้ว')
+          this.makeToast('แก้ไขสำเร็จ', 'อาคาร ' + updateBuilding.code + updateBuilding.name + ' แก้ไขแล้ว')
         }
       ).catch(() => {
-        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุง' + building._id, 'danger')
+        this.makeToast('ปรับปรุงไม่สำเร็จ', 'ไม่สามารถปรับปรุงอาคาร' + building.code + building.name, 'danger')
       })
     },
     getRooms (item) {
