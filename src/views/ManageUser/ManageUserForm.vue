@@ -49,7 +49,6 @@
         >
           <b-form-radio-group v-model="form.roles" :options="allRoles" :state="state" name="radio-validation">
             <b-form-invalid-feedback :state="state">select one</b-form-invalid-feedback>
-            <b-form-valid-feedback :state="state">เรียบร้อย</b-form-valid-feedback>
           </b-form-radio-group>
         </b-form-group>
 
@@ -65,7 +64,6 @@
         </b-form-select>
 
         </b-form-group>
-
       </b-form>
       <b-card>
         <pre>
@@ -84,7 +82,8 @@ export default {
   props: {
     user: Object,
     roless: Array,
-    institutions: Array
+    institutions: Array,
+    insAdmin: Object
   },
   data () {
     return {
@@ -97,7 +96,7 @@ export default {
       },
       isAddNew: false,
       allInstitution: [],
-      allRoles: ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER'],
+      allRoles: [{}],
       selectRoles: [],
       value: []
     }
@@ -110,10 +109,10 @@ export default {
       return this.form.surname.length >= 1
     },
     validateRoles () {
-      return this.form.roles.length === 1
+      return this.form.roles.length !== 0
     },
     validateInstitution () {
-      return this.form.institution.length >= 1
+      return this.form.institution.length !== 0
     },
     validateForm () {
       return this.validateName && this.validateSurname && this.validateRoles && this.validateInstitution
@@ -131,13 +130,27 @@ export default {
     },
 
     getValueInstitution () {
-      for (const i of this.institutions) {
-        this.allInstitution.push({
-          value: i,
-          text: i.name
-        })
+      if (this.roless[0] === 'LOCAL_ADMIN') {
+        for (const i of this.institutions) {
+          this.allInstitution.push({
+            value: i,
+            text: i.name
+          })
+        }
+      } else {
+        this.allInstitution.push(this.user.institution.name)
       }
     },
+
+    checkRoles (roles) {
+      if (roles[0] === 'LOCAL_ADMIN') {
+        this.allRoles = ['ADMIN', 'USER', 'APPROVER']
+      } else if (roles[0] === 'ADMIN') {
+        this.allRoles = ['USER', 'APPROVER']
+      }
+      return this.allRoles
+    },
+
     addNew () {
       this.isAddNew = true
       this.$nextTick(() => {
@@ -162,7 +175,7 @@ export default {
         roles: [{}],
         institution: {}
       }
-      this.allRoles = ['LOCAL_ADMIN', 'ADMIN', 'USER', 'APPROVER']
+      this.allRoles = []
       this.allInstitution = []
       this.selectRoles = []
     },
@@ -175,8 +188,9 @@ export default {
         this.form.name = this.user.name
         this.form.surname = this.user.surname
         this.form.roles = this.user.roles
-        this.form.institution = this.user.institution
+        this.form.institution = this.user.institution.name
         this.getValueInstitution()
+        this.checkRoles(this.roless)
       }
     },
     resetModal (evt) {
@@ -184,7 +198,7 @@ export default {
     },
     handleOk (evt) {
       evt.preventDefault()
-      // if (!this.validateForm) return
+      if (!this.validateForm) return
       this.submit()
       this.$nextTick(() => {
         this.$bvModal.hide('modal-user')

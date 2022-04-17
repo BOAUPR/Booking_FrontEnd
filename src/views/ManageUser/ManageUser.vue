@@ -10,7 +10,7 @@
       <b-row>
         <b-col class="text-right">
           <ManageUserForm
-            :user="selectedItem" :institutions="allInstitution"
+            :user="selectedItem" :institutions="allInstitution" :roless="userRoles"
             ref="manageUserForm"
             @save="saveUser"
           ></ManageUserForm>
@@ -35,7 +35,7 @@
             <template #cell(roles)="{ item }">
               {{ getRolesName(item.roles) }}
             </template>
-            <template #cell(institution)="{ item }" v-if="userRoles[0] === 'ADMIN'">
+            <template #cell(institution)="{ item }">
               {{ item.institution.name }}
             </template>
           </b-table>
@@ -62,11 +62,10 @@ export default {
     },
     deleteUser (item) {
       if (confirm(`คุณต้องการลบ ${item.name} หรือไม่?`)) {
-        api
-          .delete('http://localhost:3000/users/' + item._id)
+        api.delete('http://localhost:3000/users/' + item._id)
           .then(
             function (response) {
-              this.getUsers()
+              this.reload()
               this.makeToast('ลบสำเร็จ', 'ผู้ใช้งาน ' + item.name + ' ถูกลบแล้ว')
             }.bind(this)
           )
@@ -82,10 +81,8 @@ export default {
       // Updata
       api.patch('http://localhost:3000/users/' + item._id, item).then(
         function (response) {
-          console.log('------------1')
-          console.log(item._id)
+          this.reload()
           const updateUser = response.data
-          this.getUsers()
           this.makeToast('ปรับปรุงสำเร็จ', 'ผู้ใช้งาน ' + updateUser.name + ' ถูกแก้ไขแล้ว')
         }.bind(this)
       )
@@ -108,7 +105,6 @@ export default {
         self.allInstitution = response.data
       })
     },
-
     getUsers () {
       const self = this
       api.get('http://localhost:3000/users').then(
@@ -116,6 +112,28 @@ export default {
           self.users = response.data
         }
       )
+    },
+    getUserIns () {
+      const self = this
+      api.get('http://localhost:3000/users/Ins/' + this.userID).then(
+        function (response) {
+          self.users = response.data
+        }
+      )
+    },
+    reload () {
+      if (this.userRoles[0] === 'ADMIN') {
+        this.getUserIns()
+      } else if (this.userRoles[0] === 'LOCAL_ADMIN') {
+        this.getUser()
+      }
+    },
+
+    getInstitutionUser () {
+      const self = this
+      api.get('http://localhost:3000/users/institution/' + this.userID).then((response) => {
+        self.userInstitution = response.data
+      })
     },
 
     getRolesName (item) {
@@ -145,12 +163,21 @@ export default {
       isInstitution: false,
       allRoles: [],
       allInstitution: [],
-      userRoles: this.$store.getters['auth/isRole']
+      userID: this.$store.getters['auth/isUserId'],
+      userRoles: this.$store.getters['auth/isRole'],
+      userInstitution: {},
+      allUser: [],
+      showIns: []
     }
   },
   mounted () {
-    this.getUsers()
+    if (this.userRoles[0] === 'ADMIN') {
+      this.getUserIns()
+    } else if (this.userRoles[0] === 'LOCAL_ADMIN') {
+      this.getUsers()
+    }
     this.getInstitution()
+    this.getInstitutionUser()
   }
 }
 </script>
